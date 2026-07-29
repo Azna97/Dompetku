@@ -2,7 +2,13 @@
   "version": 2,
   "functions": {
     "api/index.js": {
-      "includeFiles": "{supabase_schema.sql,node_modules/sql.js/dist/sql-wasm.wasm}"
+      "includeFiles": [
+        "index.html",
+        "app.js",
+        "styles.css",
+        "supabase_schema.sql",
+        "node_modules/sql.js/dist/sql-wasm.wasm"
+      ]
     }
   },
   "rewrites": [
