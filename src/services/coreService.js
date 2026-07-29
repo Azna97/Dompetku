@@ -279,7 +279,10 @@ async function runSqliteMigrations() {
 
 async function initializeDatabase() {
   if (db.kind === "postgres") {
-    await runSqlFile(db, path.join(ROOT_DIR, "supabase_schema.sql"));
+    const cwdSchema = path.join(process.cwd(), "supabase_schema.sql");
+    const rootSchema = path.join(ROOT_DIR, "supabase_schema.sql");
+    const schemaPath = fs.existsSync(cwdSchema) ? cwdSchema : rootSchema;
+    await runSqlFile(db, schemaPath);
     return;
   }
   await createSqliteBaseTables();

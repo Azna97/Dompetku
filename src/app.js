@@ -1,4 +1,4 @@
-﻿const path = require("path");
+const path = require("path");
 const fs = require("fs");
 const express = require("express");
 const apiRouter = require("./routes/api");
@@ -15,7 +15,11 @@ app.use(async (req, res, next) => {
     await appReady;
     next();
   } catch (error) {
-    next(error);
+    console.error("Gagal inisialisasi database:", error);
+    res.status(500).json({
+      error: "Gagal inisialisasi database. Pastikan DATABASE_URL Supabase/Postgres di Vercel sudah benar.",
+      details: error.message || String(error)
+    });
   }
 });
 app.use(attachRequestContext);
