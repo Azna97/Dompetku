@@ -1,0 +1,6 @@
+{
+  "name": "DompetKu Keuangan Pribadi",
+  "description": "Aplikasi Manajemen Keuangan Pribadi dan Tabungan",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
