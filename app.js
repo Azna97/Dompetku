@@ -14,7 +14,7 @@ const defaultUiState = {
       mode: "month",
       month: currentMonth,
       start: "",
-      end: ""
+      end: "",
     },
     transactions: {
       dateMode: "all",
@@ -24,18 +24,18 @@ const defaultUiState = {
       category: "all",
       type: "all",
       wallet: "all",
-      search: ""
+      search: "",
     },
     assets: {
-      type: "all"
+      type: "all",
     },
     budgeting: {
-      month: currentMonth
+      month: currentMonth,
     },
     debts: {
-      status: "all"
-    }
-  }
+      status: "all",
+    },
+  },
 };
 
 const defaultDataState = {
@@ -45,7 +45,7 @@ const defaultDataState = {
   budgets: [],
   savingsTargets: [],
   transactions: [],
-  debts: []
+  debts: [],
 };
 
 function loadUiState() {
@@ -64,25 +64,25 @@ function loadUiState() {
         ...(parsed.filters || {}),
         dashboard: {
           ...structuredClone(defaultUiState.filters.dashboard),
-          ...(parsed.filters?.dashboard || {})
+          ...(parsed.filters?.dashboard || {}),
         },
         transactions: {
           ...structuredClone(defaultUiState.filters.transactions),
-          ...(parsed.filters?.transactions || {})
+          ...(parsed.filters?.transactions || {}),
         },
         assets: {
           ...structuredClone(defaultUiState.filters.assets),
-          ...(parsed.filters?.assets || {})
+          ...(parsed.filters?.assets || {}),
         },
         budgeting: {
           ...structuredClone(defaultUiState.filters.budgeting),
-          ...(parsed.filters?.budgeting || {})
+          ...(parsed.filters?.budgeting || {}),
         },
         debts: {
           ...structuredClone(defaultUiState.filters.debts),
-          ...(parsed.filters?.debts || {})
-        }
-      }
+          ...(parsed.filters?.debts || {}),
+        },
+      },
     };
   } catch {
     localStorage.removeItem(UI_STORAGE_KEY);
@@ -98,7 +98,7 @@ let state = {
   isLoading: false,
   activeTransactionDetailId: null,
   activeDebtActionId: null,
-  activeDebtDetailId: null
+  activeDebtDetailId: null,
 };
 
 let calculatorExpression = "";
@@ -112,7 +112,7 @@ const pageTitleMap = {
   categories: "Kategori",
   budgeting: "Budgeting",
   debts: "Hutang Piutang",
-  profile: "Profil & Akun"
+  profile: "Profil & Akun",
 };
 
 const elements = {
@@ -270,7 +270,7 @@ const elements = {
   deleteAccountPassword: document.getElementById("deleteAccountPassword"),
   profileStatus: document.getElementById("profileStatus"),
   calculatorDisplay: document.getElementById("calculatorDisplay"),
-  calculatorGrid: document.getElementById("calculatorGrid")
+  calculatorGrid: document.getElementById("calculatorGrid"),
 };
 
 function persistUiState() {
@@ -279,7 +279,7 @@ function persistUiState() {
     activeView: state.activeView,
     sidebarCollapsed: state.sidebarCollapsed,
     showAmounts: state.showAmounts,
-    filters: state.filters
+    filters: state.filters,
   };
   localStorage.setItem(UI_STORAGE_KEY, JSON.stringify(uiState));
 }
@@ -287,7 +287,7 @@ function persistUiState() {
 async function apiRequest(path, options = {}) {
   const response = await fetch(path, {
     headers: { "Content-Type": "application/json" },
-    ...options
+    ...options,
   });
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
@@ -333,7 +333,7 @@ async function loadStateFromApi() {
     state = {
       ...state,
       ...data,
-      isLoading: false
+      isLoading: false,
     };
   } catch (error) {
     state.isLoading = false;
@@ -358,7 +358,7 @@ function formatCurrency(value) {
   return new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
-    maximumFractionDigits: 0
+    maximumFractionDigits: 0,
   }).format(Number(value || 0));
 }
 
@@ -398,7 +398,7 @@ function setupAmountInputFormatters() {
     elements.flowAmount,
     elements.transferAmount,
     elements.debtAmount,
-    elements.paymentAmount
+    elements.paymentAmount,
   ].filter(Boolean);
 
   inputs.forEach((input) => {
@@ -413,22 +413,18 @@ function setupAmountInputFormatters() {
   });
 }
 const assetTypeMeta = {
-  cash_equivalent: { label: "Kas & Setara Kas", icon: "â—ˆ", tone: "primary" },
-  gold: { label: "Emas", icon: "âœ¦", tone: "warning" },
-  investment: { label: "Investasi", icon: "â†—", tone: "success" },
-  property: { label: "Properti", icon: "âŒ‚", tone: "primary" },
-  vehicle: { label: "Kendaraan", icon: "â†”", tone: "danger" },
-  business: { label: "Bisnis", icon: "â–£", tone: "success" },
-  gadget: { label: "Gadget", icon: "â—«", tone: "primary" },
-  other: { label: "Lainnya", icon: "â€¢", tone: "primary" }
+  cash_equivalent: { label: "Kas & Setara Kas", icon: "💵", tone: "primary" },
+  gold: { label: "Emas", icon: "🪙", tone: "warning" },
+  investment: { label: "Investasi", icon: "📈", tone: "success" },
+  property: { label: "Properti", icon: "🏠", tone: "primary" },
+  vehicle: { label: "Kendaraan", icon: "🚗", tone: "danger" },
+  business: { label: "Bisnis", icon: "🏢", tone: "success" },
+  gadget: { label: "Gadget", icon: "📱", tone: "primary" },
+  other: { label: "Lainnya", icon: "📦", tone: "primary" },
 };
 
 function createAnimatedMetric(value, format = "currency", className = "stat-value") {
-  const displayValue = format === "currency"
-    ? formatAmount(value)
-    : state.showAmounts
-      ? `${Math.round(Number(value || 0))}%`
-      : "******";
+  const displayValue = format === "currency" ? formatAmount(value) : state.showAmounts ? `${Math.round(Number(value || 0))}%` : "******";
 
   return `
     <div class="${className} animated-number" data-format="${format}" data-value="${Number(value || 0)}">
@@ -570,17 +566,9 @@ function getFilteredTransactions() {
     .filter((item) => {
       const query = (filters.search || "").trim().toLowerCase();
       if (!query) return true;
-      const walletLabel = item.type === "transfer"
-        ? `${getWalletById(item.fromWalletId)?.name || ""} ${getWalletById(item.toWalletId)?.name || ""}`
-        : (getWalletById(item.walletId)?.name || "");
-      const categoryLabel = item.type === "transfer" ? "transfer" : (getCategoryById(item.categoryId)?.name || "");
-      const haystack = [
-        item.description || "",
-        item.note || "",
-        walletLabel,
-        categoryLabel,
-        item.date
-      ].join(" ").toLowerCase();
+      const walletLabel = item.type === "transfer" ? `${getWalletById(item.fromWalletId)?.name || ""} ${getWalletById(item.toWalletId)?.name || ""}` : getWalletById(item.walletId)?.name || "";
+      const categoryLabel = item.type === "transfer" ? "transfer" : getCategoryById(item.categoryId)?.name || "";
+      const haystack = [item.description || "", item.note || "", walletLabel, categoryLabel, item.date].join(" ").toLowerCase();
       return haystack.includes(query);
     })
     .sort((a, b) => b.date.localeCompare(a.date));
@@ -588,9 +576,7 @@ function getFilteredTransactions() {
 
 function getFilteredAssets() {
   const filters = state.filters.assets;
-  return state.assets
-    .filter((item) => filters.type === "all" || item.type === filters.type)
-    .sort((a, b) => Number(b.currentValue || 0) - Number(a.currentValue || 0));
+  return state.assets.filter((item) => filters.type === "all" || item.type === filters.type).sort((a, b) => Number(b.currentValue || 0) - Number(a.currentValue || 0));
 }
 
 function getBudgetMonthValue() {
@@ -602,9 +588,7 @@ function getExpenseCategories() {
 }
 
 function getBudgetUsageByCategory(month, categoryId) {
-  return state.transactions
-    .filter((item) => item.type === "expense" && item.categoryId === categoryId && item.date.startsWith(month))
-    .reduce((sum, item) => sum + item.amount, 0);
+  return state.transactions.filter((item) => item.type === "expense" && item.categoryId === categoryId && item.date.startsWith(month)).reduce((sum, item) => sum + item.amount, 0);
 }
 
 function getPreviousMonth(monthValue) {
@@ -626,7 +610,7 @@ function getBudgetCarryOverAmount(month, categoryId, seen = new Set()) {
   if (!previousBudget || !previousBudget.carryOverEnabled) return 0;
   const previousCarry = getBudgetCarryOverAmount(previousMonth, categoryId, seen);
   const previousSpent = getBudgetUsageByCategory(previousMonth, categoryId);
-  const previousLeftover = (Number(previousBudget.amount || 0) + previousCarry) - previousSpent;
+  const previousLeftover = Number(previousBudget.amount || 0) + previousCarry - previousSpent;
   return previousLeftover > 0 ? previousLeftover : 0;
 }
 
@@ -642,8 +626,10 @@ function formatTransactionGroupDate(date) {
   return new Intl.DateTimeFormat("id-ID", {
     day: "2-digit",
     month: "short",
-    year: "numeric"
-  }).format(new Date(`${date}T00:00:00`)).toUpperCase();
+    year: "numeric",
+  })
+    .format(new Date(`${date}T00:00:00`))
+    .toUpperCase();
 }
 
 function getTransactionTypeLabel(type) {
@@ -658,7 +644,7 @@ function getTransactionVisualMeta(item) {
       icon: "+",
       toneClass: "income",
       amountClass: "text-success",
-      prefix: "+"
+      prefix: "+",
     };
   }
   if (item.type === "expense") {
@@ -666,42 +652,47 @@ function getTransactionVisualMeta(item) {
       icon: "-",
       toneClass: "expense",
       amountClass: "text-danger",
-      prefix: "-"
+      prefix: "-",
     };
   }
   return {
     icon: "<->",
     toneClass: "transfer",
     amountClass: "text-soft",
-    prefix: ""
+    prefix: "",
   };
 }
 
 function createTransactionInlineDetail(item) {
   const amountClass = item.type === "expense" ? "text-danger" : item.type === "income" ? "text-success" : "text-soft";
-  const rows = item.type === "transfer"
-    ? [
-      ["Dari", getWalletById(item.fromWalletId)?.name || "-"],
-      ["Ke", getWalletById(item.toWalletId)?.name || "-"],
-      ["Waktu", item.date],
-      ["Catatan", item.description || "-"]
-    ]
-    : [
-      ["Wallet", getWalletById(item.walletId)?.name || "-"],
-      ["Kategori", getCategoryById(item.categoryId)?.name || "-"],
-      ["Waktu", item.date],
-      ["Catatan", item.note || item.description || "-"]
-    ];
+  const rows =
+    item.type === "transfer"
+      ? [
+          ["Dari", getWalletById(item.fromWalletId)?.name || "-"],
+          ["Ke", getWalletById(item.toWalletId)?.name || "-"],
+          ["Waktu", item.date],
+          ["Catatan", item.description || "-"],
+        ]
+      : [
+          ["Wallet", getWalletById(item.walletId)?.name || "-"],
+          ["Kategori", getCategoryById(item.categoryId)?.name || "-"],
+          ["Waktu", item.date],
+          ["Catatan", item.note || item.description || "-"],
+        ];
 
   return `
     <div class="transaction-inline-detail grid gap-4">
       <div class="transaction-inline-grid">
-        ${rows.map(([label, value]) => `
+        ${rows
+          .map(
+            ([label, value]) => `
           <div class="transaction-inline-row">
             <span class="transaction-inline-label">${label}</span>
             <strong class="transaction-inline-value ${label === "Catatan" ? "is-note" : ""} ${label === "Jumlah" ? amountClass : ""}">${value}</strong>
           </div>
-        `).join("")}
+        `,
+          )
+          .join("")}
       </div>
       <div class="transaction-inline-actions">
         <button class="ghost-btn transaction-detail-btn" data-edit-transaction="${item.id}" type="button">Ubah</button>
@@ -740,16 +731,18 @@ function createTransactionChart(transactions) {
   return `
     <svg class="chart-svg" viewBox="0 0 ${svgWidth} ${height + 20}" preserveAspectRatio="xMidYMid meet">
       <line x1="12" y1="${baseLine}" x2="${svgWidth - 12}" y2="${baseLine}" stroke="var(--line)"></line>
-      ${entries.map(([date, value], index) => {
-        const x = 20 + index * (barWidth + gap);
-        const barHeight = (Math.abs(value) / max) * 90;
-        const y = value >= 0 ? baseLine - barHeight : baseLine;
-        const color = value >= 0 ? "var(--success)" : "var(--danger)";
-        return `
+      ${entries
+        .map(([date, value], index) => {
+          const x = 20 + index * (barWidth + gap);
+          const barHeight = (Math.abs(value) / max) * 90;
+          const y = value >= 0 ? baseLine - barHeight : baseLine;
+          const color = value >= 0 ? "var(--success)" : "var(--danger)";
+          return `
           <rect x="${x}" y="${y}" width="${barWidth}" height="${barHeight}" rx="14" fill="${color}" opacity="0.85"></rect>
           <text x="${x + barWidth / 2}" y="${height}" text-anchor="middle" class="bar-label">${date.slice(5)}</text>
         `;
-      }).join("")}
+        })
+        .join("")}
     </svg>
   `;
 }
@@ -775,22 +768,26 @@ function createCategoryChart(transactions) {
     <div style="display:grid;grid-template-columns:200px 1fr;gap:18px;align-items:center;width:100%;">
       <svg viewBox="0 0 180 180" style="width:180px;height:180px;">
         <circle cx="90" cy="90" r="60" fill="transparent" stroke="rgba(255,255,255,0.08)" stroke-width="18"></circle>
-        ${entries.map(([, value], index) => {
-          const ratio = value / total;
-          const length = ratio * 377;
-          const dash = `${length} ${377 - length}`;
-          const segment = `
+        ${entries
+          .map(([, value], index) => {
+            const ratio = value / total;
+            const length = ratio * 377;
+            const dash = `${length} ${377 - length}`;
+            const segment = `
             <circle cx="90" cy="90" r="60" fill="transparent" stroke="${palette[index % palette.length]}" stroke-width="18"
               stroke-dasharray="${dash}" stroke-dashoffset="${-offset}" transform="rotate(-90 90 90)" />
           `;
-          offset += length;
-          return segment;
-        }).join("")}
+            offset += length;
+            return segment;
+          })
+          .join("")}
         <text x="90" y="86" text-anchor="middle" fill="var(--muted)" font-size="12">Pengeluaran</text>
         <text x="90" y="108" text-anchor="middle" fill="var(--text)" font-size="16" font-weight="700">${entries.length} Kategori</text>
       </svg>
       <div class="stack-list">
-        ${entries.map(([label, value], index) => `
+        ${entries
+          .map(
+            ([label, value], index) => `
           <div class="list-item">
             <div class="card-actions">
               <span style="width:12px;height:12px;border-radius:999px;background:${palette[index % palette.length]};display:inline-block;"></span>
@@ -798,7 +795,9 @@ function createCategoryChart(transactions) {
             </div>
             <span>${Math.round((value / total) * 100)}%</span>
           </div>
-        `).join("")}
+        `,
+          )
+          .join("")}
       </div>
     </div>
   `;
@@ -824,22 +823,26 @@ function createAssetCompositionChart(assets) {
     <div style="display:grid;grid-template-columns:200px 1fr;gap:18px;align-items:center;width:100%;">
       <svg viewBox="0 0 180 180" style="width:180px;height:180px;">
         <circle cx="90" cy="90" r="60" fill="transparent" stroke="rgba(255,255,255,0.08)" stroke-width="18"></circle>
-        ${entries.map(([, value], index) => {
-          const ratio = value / total;
-          const length = ratio * 377;
-          const dash = `${length} ${377 - length}`;
-          const segment = `
+        ${entries
+          .map(([, value], index) => {
+            const ratio = value / total;
+            const length = ratio * 377;
+            const dash = `${length} ${377 - length}`;
+            const segment = `
             <circle cx="90" cy="90" r="60" fill="transparent" stroke="${palette[index % palette.length]}" stroke-width="18"
               stroke-dasharray="${dash}" stroke-dashoffset="${-offset}" transform="rotate(-90 90 90)" />
           `;
-          offset += length;
-          return segment;
-        }).join("")}
+            offset += length;
+            return segment;
+          })
+          .join("")}
         <text x="90" y="86" text-anchor="middle" fill="var(--muted)" font-size="12">Portfolio</text>
         <text x="90" y="108" text-anchor="middle" fill="var(--text)" font-size="16" font-weight="700">${entries.length} Jenis</text>
       </svg>
       <div class="stack-list">
-        ${entries.map(([label, value], index) => `
+        ${entries
+          .map(
+            ([label, value], index) => `
           <div class="list-item">
             <div class="card-actions">
               <span style="width:12px;height:12px;border-radius:999px;background:${palette[index % palette.length]};display:inline-block;"></span>
@@ -847,7 +850,9 @@ function createAssetCompositionChart(assets) {
             </div>
             <span>${Math.round((value / total) * 100)}%</span>
           </div>
-        `).join("")}
+        `,
+          )
+          .join("")}
       </div>
     </div>
   `;
@@ -874,8 +879,8 @@ function createAssetHistoryChart(assets) {
   const max = Math.max(...entries.map(([, value]) => value));
   const range = Math.max(max - min, 1);
   const points = entries.map(([date, value], index) => {
-    const x = paddingX + (index * ((width - paddingX * 2) / Math.max(entries.length - 1, 1)));
-    const y = height - paddingY - (((value - min) / range) * (height - paddingY * 2));
+    const x = paddingX + index * ((width - paddingX * 2) / Math.max(entries.length - 1, 1));
+    const y = height - paddingY - ((value - min) / range) * (height - paddingY * 2);
     return { date, value, x, y };
   });
   const path = points.map((point, index) => `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`).join(" ");
@@ -883,10 +888,14 @@ function createAssetHistoryChart(assets) {
   return `
     <svg class="chart-svg" viewBox="0 0 ${width} ${height + 28}" preserveAspectRatio="xMidYMid meet">
       <path d="${path}" fill="none" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
-      ${points.map((point) => `
+      ${points
+        .map(
+          (point) => `
         <circle cx="${point.x}" cy="${point.y}" r="5.5" fill="var(--panel-strong)" stroke="var(--primary)" stroke-width="3"></circle>
         <text x="${point.x}" y="${height + 18}" text-anchor="middle" class="bar-label">${point.date.slice(5)}</text>
-      `).join("")}
+      `,
+        )
+        .join("")}
     </svg>
   `;
 }
@@ -979,26 +988,34 @@ function createBudgetInsightCard(label, value, caption, tone = "primary") {
 }
 
 function createSkeletonCards(count, className = "") {
-  return Array.from({ length: count }, () => `
+  return Array.from(
+    { length: count },
+    () => `
     <article class="skeleton-card ${className}">
       <div class="skeleton-line short"></div>
       <div class="skeleton-line strong"></div>
       <div class="skeleton-line medium"></div>
     </article>
-  `).join("");
+  `,
+  ).join("");
 }
 
 function createSkeletonList(count) {
-  return Array.from({ length: count }, () => `
+  return Array.from(
+    { length: count },
+    () => `
     <div class="skeleton-list-item">
       <div class="skeleton-line medium"></div>
       <div class="skeleton-line short"></div>
     </div>
-  `).join("");
+  `,
+  ).join("");
 }
 
 function createSkeletonRows(count) {
-  return Array.from({ length: count }, () => `
+  return Array.from(
+    { length: count },
+    () => `
     <tr class="skeleton-row">
       <td colspan="5">
         <div class="skeleton-table-card">
@@ -1007,7 +1024,8 @@ function createSkeletonRows(count) {
         </div>
       </td>
     </tr>
-  `).join("");
+  `,
+  ).join("");
 }
 
 function renderDashboard() {
@@ -1020,15 +1038,16 @@ function renderDashboard() {
   }
 
   const transactions = getDashboardTransactions();
-  const summary = transactions.reduce((acc, item) => {
-    if (item.type === "income") acc.income += item.amount;
-    if (item.type === "expense") acc.expense += item.amount;
-    return acc;
-  }, { income: 0, expense: 0 });
+  const summary = transactions.reduce(
+    (acc, item) => {
+      if (item.type === "income") acc.income += item.amount;
+      if (item.type === "expense") acc.expense += item.amount;
+      return acc;
+    },
+    { income: 0, expense: 0 },
+  );
   summary.net = summary.income - summary.expense;
-  summary.balance = state.filters.dashboard.balanceMode === "running"
-    ? getBalanceUpToDate(getDashboardBalanceCutoff())
-    : getDashboardPeriodNet(transactions);
+  summary.balance = state.filters.dashboard.balanceMode === "running" ? getBalanceUpToDate(getDashboardBalanceCutoff()) : getDashboardPeriodNet(transactions);
   const balanceLabel = state.filters.dashboard.balanceMode === "running" ? "Saldo Berjalan" : "Saldo Periode";
 
   elements.dashboardStats.innerHTML = `
@@ -1108,21 +1127,19 @@ function renderDashboardInsights(transactions, summary) {
   const isRunningBalance = state.filters.dashboard.balanceMode === "running";
   const savingsRateLabel = isRunningBalance ? "Saving Rate Periode" : "Saving Rate";
   const savingsRateCaption = isRunningBalance
-    ? (summary.income
+    ? summary.income
       ? "Rasio ini tetap dihitung dari net transaksi pada periode aktif, sementara kartu saldo utama bersifat akumulatif."
-      : "Belum ada pemasukan pada periode aktif untuk menghitung rasio periode.")
-    : (summary.income
+      : "Belum ada pemasukan pada periode aktif untuk menghitung rasio periode."
+    : summary.income
       ? "Persentase saldo periode terhadap pemasukan pada periode aktif."
-      : "Belum ada pemasukan pada periode ini.");
-  const debtRemaining = state.debts
-    .filter((item) => item.type === "debt")
-    .reduce((sum, item) => sum + Math.max(item.amount - item.payments.reduce((acc, payment) => acc + payment.amount, 0), 0), 0);
+      : "Belum ada pemasukan pada periode ini.";
+  const debtRemaining = state.debts.filter((item) => item.type === "debt").reduce((sum, item) => sum + Math.max(item.amount - item.payments.reduce((acc, payment) => acc + payment.amount, 0), 0), 0);
 
   elements.dashboardInsights.innerHTML = [
     createInsightMetricCard(savingsRateLabel, savingsRate, "percent", savingsRateCaption),
     createInsightCard("Kategori Terbesar", topCategory ? topCategory[0] : "-", topCategory ? formatAmount(topCategory[1]) : "Belum ada pengeluaran tercatat."),
     createInsightCard("Wallet Tersibuk", topWallet ? topWallet[0] : "-", topWallet ? formatAmount(topWallet[1]) : "Belum ada aktivitas wallet."),
-    createInsightMetricCard("Sisa Hutang", debtRemaining, "currency", debtRemaining ? "Total sisa hutang yang belum lunas." : "Tidak ada hutang aktif.")
+    createInsightMetricCard("Sisa Hutang", debtRemaining, "currency", debtRemaining ? "Total sisa hutang yang belum lunas." : "Tidak ada hutang aktif."),
   ].join("");
 
   animateNumbers(elements.dashboardStats);
@@ -1140,7 +1157,9 @@ function renderWallets() {
     return;
   }
 
-  elements.walletGrid.innerHTML = state.wallets.map((wallet) => `
+  elements.walletGrid.innerHTML = state.wallets
+    .map(
+      (wallet) => `
     <article class="wallet-card rounded-[28px] border border-white/10 bg-slate-900/60 p-6 shadow-2xl backdrop-blur-xl">
       <div class="wallet-card-header">
         <div>
@@ -1157,7 +1176,9 @@ function renderWallets() {
         ${createAnimatedMetric(getWalletComputedBalance(wallet.id), "currency", "money")}
       </div>
     </article>
-  `).join("");
+  `,
+    )
+    .join("");
 
   animateNumbers(elements.walletGrid);
 }
@@ -1176,15 +1197,13 @@ function renderAssets() {
   const visibleTotal = assets.reduce((sum, item) => sum + Number(item.currentValue || 0), 0);
   const totalGrowth = assets.reduce((sum, item) => sum + (Number(item.currentValue || 0) - Number(item.purchaseValue || 0)), 0);
   const largestAsset = [...assets].sort((a, b) => Number(b.currentValue || 0) - Number(a.currentValue || 0))[0];
-  const totalDebtRemaining = state.debts
-    .filter((item) => item.type === "debt")
-    .reduce((sum, item) => sum + getDebtRemainingAmount(item), 0);
+  const totalDebtRemaining = state.debts.filter((item) => item.type === "debt").reduce((sum, item) => sum + getDebtRemainingAmount(item), 0);
   const netWorth = visibleTotal - totalDebtRemaining;
 
   elements.assetSummary.innerHTML = [
     createStatCard("Total Nilai Aset", visibleTotal, "primary"),
     createStatCard("Kekayaan Bersih", netWorth, netWorth >= 0 ? "success" : "danger"),
-    createInsightCard("Aset Terbesar", largestAsset?.name || "-", largestAsset ? formatAmount(largestAsset.currentValue) : "Belum ada aset tersimpan.")
+    createInsightCard("Aset Terbesar", largestAsset?.name || "-", largestAsset ? formatAmount(largestAsset.currentValue) : "Belum ada aset tersimpan."),
   ].join("");
 
   elements.assetCompositionChart.innerHTML = createAssetCompositionChart(assets);
@@ -1196,13 +1215,14 @@ function renderAssets() {
     return;
   }
 
-  elements.assetList.innerHTML = assets.map((asset) => {
-    const meta = getAssetTypeMeta(asset.type);
-    const currentValue = Number(asset.currentValue || 0);
-    const purchaseValue = Number(asset.purchaseValue || 0);
-    const growthValue = currentValue - purchaseValue;
-    const share = totalAssets > 0 ? Math.round((currentValue / totalAssets) * 100) : 0;
-    return `
+  elements.assetList.innerHTML = assets
+    .map((asset) => {
+      const meta = getAssetTypeMeta(asset.type);
+      const currentValue = Number(asset.currentValue || 0);
+      const purchaseValue = Number(asset.purchaseValue || 0);
+      const growthValue = currentValue - purchaseValue;
+      const share = totalAssets > 0 ? Math.round((currentValue / totalAssets) * 100) : 0;
+      return `
       <article class="asset-card rounded-[28px] border border-white/10 bg-slate-900/60 p-5 shadow-2xl backdrop-blur-xl">
         <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div class="flex items-start gap-4">
@@ -1269,7 +1289,8 @@ function renderAssets() {
         </div>
       </article>
     `;
-  }).join("");
+    })
+    .join("");
 
   animateNumbers(elements.assetSummary);
   animateNumbers(elements.assetList);
@@ -1284,15 +1305,11 @@ function renderCategoryOptions() {
   elements.transactionCategoryFilter.value = state.filters.transactions.category;
 
   const flowCategories = state.categories.filter((item) => item.type === (elements.flowType.value || "income"));
-  elements.flowCategory.innerHTML = flowCategories.length
-    ? flowCategories.map((item) => `<option value="${item.id}">${item.name}</option>`).join("")
-    : `<option value="" disabled selected>Belum ada kategori</option>`;
+  elements.flowCategory.innerHTML = flowCategories.length ? flowCategories.map((item) => `<option value="${item.id}">${item.name}</option>`).join("") : `<option value="" disabled selected>Belum ada kategori</option>`;
 }
 
 function renderWalletOptions() {
-  const walletOptions = state.wallets.length
-    ? state.wallets.map((item) => `<option value="${item.id}">${item.name}</option>`).join("")
-    : `<option value="" disabled selected>Belum ada wallet</option>`;
+  const walletOptions = state.wallets.length ? state.wallets.map((item) => `<option value="${item.id}">${item.name}</option>`).join("") : `<option value="" disabled selected>Belum ada wallet</option>`;
   elements.flowWallet.innerHTML = walletOptions;
   elements.transferFromWallet.innerHTML = walletOptions;
   elements.transferToWallet.innerHTML = walletOptions;
@@ -1320,18 +1337,19 @@ function renderTransactions() {
     return groups;
   }, {});
 
-  elements.transactionsTableBody.innerHTML = Object.entries(groupedTransactions).map(([date, items]) => `
+  elements.transactionsTableBody.innerHTML = Object.entries(groupedTransactions)
+    .map(
+      ([date, items]) => `
     <section class="transaction-date-group space-y-3">
       <div class="transaction-date-label">${formatTransactionGroupDate(date)}</div>
       <div class="transaction-date-stack grid gap-3">
-        ${items.map((item) => {
-          const walletLabel = item.type === "transfer"
-            ? `${getWalletById(item.fromWalletId)?.name || "-"} -> ${getWalletById(item.toWalletId)?.name || "-"}`
-            : (getWalletById(item.walletId)?.name || "-");
-          const categoryLabel = item.type === "transfer" ? "Transfer" : (getCategoryById(item.categoryId)?.name || "Tanpa Kategori");
-          const meta = getTransactionVisualMeta(item);
-          const isExpanded = state.activeTransactionDetailId === item.id;
-          return `
+        ${items
+          .map((item) => {
+            const walletLabel = item.type === "transfer" ? `${getWalletById(item.fromWalletId)?.name || "-"} -> ${getWalletById(item.toWalletId)?.name || "-"}` : getWalletById(item.walletId)?.name || "-";
+            const categoryLabel = item.type === "transfer" ? "Transfer" : getCategoryById(item.categoryId)?.name || "Tanpa Kategori";
+            const meta = getTransactionVisualMeta(item);
+            const isExpanded = state.activeTransactionDetailId === item.id;
+            return `
             <article class="transaction-feed-card ${meta.toneClass} ${isExpanded ? "expanded" : ""} rounded-[28px] border border-white/10 bg-slate-900/60 p-4 shadow-2xl backdrop-blur-xl">
               <button class="transaction-feed-main" data-view-transaction="${item.id}" type="button">
                 <div class="transaction-feed-icon ${meta.toneClass}">${meta.icon}</div>
@@ -1349,10 +1367,13 @@ function renderTransactions() {
               </div>
             </article>
           `;
-        }).join("")}
+          })
+          .join("")}
       </div>
     </section>
-  `).join("");
+  `,
+    )
+    .join("");
 }
 
 function renderCategories() {
@@ -1365,13 +1386,12 @@ function renderCategories() {
   const renderCategoryList = (type, container) => {
     const items = state.categories.filter((item) => item.type === type);
     if (!items.length) {
-      container.innerHTML = createEmptyState(
-        `Belum ada kategori ${type === "income" ? "pemasukan" : "pengeluaran"}`,
-        `Tambahkan kategori ${type === "income" ? "pemasukan" : "pengeluaran"} supaya pencatatan lebih rapi.`
-      );
+      container.innerHTML = createEmptyState(`Belum ada kategori ${type === "income" ? "pemasukan" : "pengeluaran"}`, `Tambahkan kategori ${type === "income" ? "pemasukan" : "pengeluaran"} supaya pencatatan lebih rapi.`);
       return;
     }
-    container.innerHTML = items.map((item) => `
+    container.innerHTML = items
+      .map(
+        (item) => `
       <div class="flex items-center justify-between gap-3 rounded-[22px] border border-white/10 bg-white/5 px-4 py-4 backdrop-blur-md">
         <div class="flex items-center gap-3">
           <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl ${type === "income" ? "bg-emerald-400/15 text-emerald-300" : "bg-rose-400/15 text-rose-300"}">${type === "income" ? "+" : "-"}</span>
@@ -1385,7 +1405,9 @@ function renderCategories() {
           <button class="icon-btn" data-delete-category="${item.id}" type="button">Delete</button>
         </div>
       </div>
-    `).join("");
+    `,
+      )
+      .join("");
   };
 
   renderCategoryList("income", elements.incomeCategoryList);
@@ -1394,9 +1416,7 @@ function renderCategories() {
 
 function renderBudgetCategoryOptions() {
   const categories = getExpenseCategories();
-  elements.budgetCategory.innerHTML = categories.length
-    ? categories.map((item) => `<option value="${item.id}">${item.name}</option>`).join("")
-    : `<option value="" disabled selected>Belum ada kategori pengeluaran</option>`;
+  elements.budgetCategory.innerHTML = categories.length ? categories.map((item) => `<option value="${item.id}">${item.name}</option>`).join("") : `<option value="" disabled selected>Belum ada kategori pengeluaran</option>`;
 }
 
 function renderBudgeting() {
@@ -1428,46 +1448,48 @@ function renderBudgeting() {
 
   elements.budgetSummary.innerHTML = [
     createBudgetSummaryCard("Total Budget", totalBudget, "primary", `Total anggaran yang kamu set untuk ${month}.`),
-    createBudgetSummaryCard("Sudah Terpakai", totalUsed, totalUsed > totalBudget ? "danger" : "success", totalBudget ? `${Math.min(Math.round((totalUsed / totalBudget) * 100), 999)}% dari total budget sudah dipakai.` : "Belum ada budget aktif di bulan ini."),
-    createBudgetSummaryCard("Sisa Budget", totalRemaining, totalRemaining < 0 ? "danger" : "primary", totalRemaining < 0 ? "Budget bulan ini sudah terlampaui." : "Sisa ruang belanja yang masih tersedia.")
+    createBudgetSummaryCard(
+      "Sudah Terpakai",
+      totalUsed,
+      totalUsed > totalBudget ? "danger" : "success",
+      totalBudget ? `${Math.min(Math.round((totalUsed / totalBudget) * 100), 999)}% dari total budget sudah dipakai.` : "Belum ada budget aktif di bulan ini.",
+    ),
+    createBudgetSummaryCard("Sisa Budget", totalRemaining, totalRemaining < 0 ? "danger" : "primary", totalRemaining < 0 ? "Budget bulan ini sudah terlampaui." : "Sisa ruang belanja yang masih tersedia."),
   ].join("");
 
   elements.budgetInsights.innerHTML = [
     createBudgetInsightCard(
       "Kategori Paling Boros",
-      mostWasteful ? (getCategoryById(mostWasteful.budget.categoryId)?.name || "Kategori") : "-",
-      mostWasteful ? `${mostWasteful.percent}% terpakai dari budget efektif bulan ini.` : "Belum ada kategori budget aktif."
+      mostWasteful ? getCategoryById(mostWasteful.budget.categoryId)?.name || "Kategori" : "-",
+      mostWasteful ? `${mostWasteful.percent}% terpakai dari budget efektif bulan ini.` : "Belum ada kategori budget aktif.",
     ),
     createBudgetInsightCard(
       "Target Tabungan",
       savingsTargetAmount ? formatAmount(savingsTargetAmount) : "Belum Diatur",
-      savingsTargetAmount
-        ? `${savingsProgress}% tercapai dari potensi sisa budget bulan ini.`
-        : "Tambahkan target tabungan supaya sisa budget bisa diarahkan ke tujuan yang jelas.",
-      savingsTargetAmount && Math.max(totalRemaining, 0) >= savingsTargetAmount ? "success" : "primary"
-    )
+      savingsTargetAmount ? `${savingsProgress}% tercapai dari potensi sisa budget bulan ini.` : "Tambahkan target tabungan supaya sisa budget bisa diarahkan ke tujuan yang jelas.",
+      savingsTargetAmount && Math.max(totalRemaining, 0) >= savingsTargetAmount ? "success" : "primary",
+    ),
   ].join("");
 
   if (!budgets.length) {
     elements.budgetInsights.innerHTML = createBudgetInsightCard(
       "Target Tabungan",
       savingsTargetAmount ? formatAmount(savingsTargetAmount) : "Belum Diatur",
-      savingsTargetAmount
-        ? `${savingsProgress}% tercapai dari potensi sisa budget bulan ini.`
-        : "Tambahkan target tabungan supaya sisa budget bisa diarahkan ke tujuan yang jelas.",
-      savingsTargetAmount ? "primary" : "primary"
+      savingsTargetAmount ? `${savingsProgress}% tercapai dari potensi sisa budget bulan ini.` : "Tambahkan target tabungan supaya sisa budget bisa diarahkan ke tujuan yang jelas.",
+      savingsTargetAmount ? "primary" : "primary",
     );
     elements.budgetList.innerHTML = createEmptyState("Belum ada budget bulan ini", "Tambahkan budget per kategori pengeluaran supaya kamu bisa memantau progres pemakaian uang.");
     return;
   }
 
-  elements.budgetList.innerHTML = budgetMetrics.map(({ budget, spent, carryOver, effectiveBudget, remaining, percent }) => {
-    const category = getCategoryById(budget.categoryId);
-    const cappedPercent = Math.min(percent, 100);
-    const toneColor = percent > 100 ? "var(--danger)" : percent >= 80 ? "var(--warning)" : "var(--success)";
-    const statusLabel = percent > 100 ? "Over Budget" : percent === 100 ? "Tepat Batas" : percent >= 80 ? "Perlu Waspada" : "Aman";
-    const overBudgetAmount = percent > 100 ? Math.abs(remaining) : 0;
-    return `
+  elements.budgetList.innerHTML = budgetMetrics
+    .map(({ budget, spent, carryOver, effectiveBudget, remaining, percent }) => {
+      const category = getCategoryById(budget.categoryId);
+      const cappedPercent = Math.min(percent, 100);
+      const toneColor = percent > 100 ? "var(--danger)" : percent >= 80 ? "var(--warning)" : "var(--success)";
+      const statusLabel = percent > 100 ? "Over Budget" : percent === 100 ? "Tepat Batas" : percent >= 80 ? "Perlu Waspada" : "Aman";
+      const overBudgetAmount = percent > 100 ? Math.abs(remaining) : 0;
+      return `
       <article class="panel rounded-[28px] border border-white/10 bg-slate-900/60 p-5 shadow-2xl backdrop-blur-xl budget-card ${percent > 100 ? "budget-card-over" : ""}">
         <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div class="grid gap-2">
@@ -1520,7 +1542,8 @@ function renderBudgeting() {
         </div>
       </article>
     `;
-  }).join("");
+    })
+    .join("");
 
   animateNumbers(elements.budgetSummary);
   animateNumbers(elements.budgetInsights);
@@ -1538,10 +1561,7 @@ function renderDebts() {
   const receivables = state.debts.filter((item) => item.type === "receivable");
   const filteredDebts = getFilteredDebts();
   const activeDebtFilter = state.filters?.debts?.status || "all";
-  elements.debtSummary.innerHTML = [
-    createDebtSummaryCard("Total Hutang", debts),
-    createDebtSummaryCard("Total Piutang", receivables)
-  ].join("");
+  elements.debtSummary.innerHTML = [createDebtSummaryCard("Total Hutang", debts), createDebtSummaryCard("Total Piutang", receivables)].join("");
 
   document.querySelectorAll("[data-debt-filter]").forEach((button) => {
     button.classList.toggle("active", button.dataset.debtFilter === activeDebtFilter);
@@ -1552,18 +1572,19 @@ function renderDebts() {
     return;
   }
 
-  elements.debtList.innerHTML = filteredDebts.map((item) => {
-    const paid = getDebtPaidAmount(item);
-    const remaining = getDebtRemainingAmount(item);
-    const percent = item.amount ? Math.min((paid / item.amount) * 100, 100) : 0;
-    const amountClass = item.type === "debt" ? "text-danger" : "text-success";
-    const actionLabel = item.type === "debt" ? "Bayar" : "Terima";
-    const actionClass = item.type === "debt" ? "danger-btn" : "success-btn";
-    const statusLabel = remaining <= 0 ? "Lunas" : item.type === "debt" ? "Utang" : "Piutang";
-    const metaTone = item.type === "debt" ? "debt-tone" : "receivable-tone";
-    const isMenuActive = state.activeDebtActionId === item.id;
-    const ringTone = item.type === "debt" ? "var(--danger)" : "var(--success)";
-    return `
+  elements.debtList.innerHTML = filteredDebts
+    .map((item) => {
+      const paid = getDebtPaidAmount(item);
+      const remaining = getDebtRemainingAmount(item);
+      const percent = item.amount ? Math.min((paid / item.amount) * 100, 100) : 0;
+      const amountClass = item.type === "debt" ? "text-danger" : "text-success";
+      const actionLabel = item.type === "debt" ? "Bayar" : "Terima";
+      const actionClass = item.type === "debt" ? "danger-btn" : "success-btn";
+      const statusLabel = remaining <= 0 ? "Lunas" : item.type === "debt" ? "Utang" : "Piutang";
+      const metaTone = item.type === "debt" ? "debt-tone" : "receivable-tone";
+      const isMenuActive = state.activeDebtActionId === item.id;
+      const ringTone = item.type === "debt" ? "var(--danger)" : "var(--success)";
+      return `
       <article class="debt-card debt-feed-card ${metaTone} ${isMenuActive ? "debt-card-active-menu" : ""} rounded-[28px] border border-white/10 bg-slate-900/60 p-5 shadow-2xl backdrop-blur-xl" data-open-debt-detail="${item.id}">
         <div class="debt-feed-top">
           <div class="debt-feed-main">
@@ -1573,7 +1594,7 @@ function renderDebts() {
                 <h4>${item.name}</h4>
                 <span class="debt-feed-status">${statusLabel}</span>
               </div>
-              <p class="debt-feed-meta">Pribadi â€¢ ${item.date} â€¢ ${remaining <= 0 ? "Sudah lunas" : "Masih aktif"}</p>
+              <p class="debt-feed-meta">Pribadi &bull; ${item.date} &bull; ${remaining <= 0 ? "Sudah lunas" : "Masih aktif"}</p>
               <p class="debt-feed-meta">${getWalletById(item.walletId)?.name || "Tanpa Wallet"}</p>
               <p class="debt-feed-note">${item.note || "Tanpa keterangan"}</p>
             </div>
@@ -1617,7 +1638,11 @@ function renderDebts() {
         <div class="debt-feed-actions">
           ${remaining > 0 ? `<button class="${actionClass} action-pill" data-open-payment-for="${item.id}" type="button">${actionLabel}</button>` : `<span class="debt-feed-paid">Selesai</span>`}
           <div class="debt-menu-wrap">
-            <button class="icon-btn debt-kebab" data-toggle-debt-menu="${item.id}" type="button">â€¢â€¢â€¢</button>
+            <button class="icon-btn debt-kebab" data-toggle-debt-menu="${item.id}" type="button">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 1.2em; height: 1.2em;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+              </svg>
+            </button>
             <div class="debt-menu ${isMenuActive ? "active" : ""}">
               <button type="button" data-edit-debt="${item.id}">Edit</button>
               <button type="button" class="danger-text" data-delete-debt="${item.id}">Hapus</button>
@@ -1626,7 +1651,8 @@ function renderDebts() {
         </div>
       </article>
     `;
-  }).join("");
+    })
+    .join("");
 
   animateNumbers(elements.debtSummary);
   animateNumbers(elements.debtList);
@@ -1635,13 +1661,9 @@ function renderDebts() {
 function renderPaymentOptions() {
   const mode = elements.paymentMode.value || "debt";
   const items = state.debts.filter((item) => item.type === mode);
-  elements.paymentDebtId.innerHTML = items.length
-    ? items.map((item) => `<option value="${item.id}">${item.name}</option>`).join("")
-    : `<option value="" disabled selected>Belum ada data ${mode === "debt" ? "hutang" : "piutang"}</option>`;
+  elements.paymentDebtId.innerHTML = items.length ? items.map((item) => `<option value="${item.id}">${item.name}</option>`).join("") : `<option value="" disabled selected>Belum ada data ${mode === "debt" ? "hutang" : "piutang"}</option>`;
   elements.paymentWalletLabel.textContent = mode === "debt" ? "Bayar Dari Wallet" : "Masuk Ke Wallet";
-  elements.paymentWalletId.innerHTML = state.wallets.length
-    ? state.wallets.map((item) => `<option value="${item.id}">${item.name}</option>`).join("")
-    : `<option value="" disabled selected>Belum ada wallet</option>`;
+  elements.paymentWalletId.innerHTML = state.wallets.length ? state.wallets.map((item) => `<option value="${item.id}">${item.name}</option>`).join("") : `<option value="" disabled selected>Belum ada wallet</option>`;
 }
 
 function syncDebtWalletLabel() {
@@ -1656,7 +1678,9 @@ function renderDebtDetailModal(debtId) {
   const percent = item.amount ? Math.min((paid / item.amount) * 100, 100) : 0;
   const ringTone = item.type === "debt" ? "var(--danger)" : "var(--success)";
   const paymentHistory = item.payments.length
-    ? item.payments.map((payment) => `
+    ? item.payments
+        .map(
+          (payment) => `
         <div class="payment-history-item flex items-center justify-between gap-3 rounded-[22px] border border-white/10 bg-white/5 px-4 py-4">
           <div>
             <strong class="text-base font-semibold text-slate-100">${payment.date}</strong>
@@ -1668,7 +1692,9 @@ function renderDebtDetailModal(debtId) {
             <button class="icon-btn" data-delete-payment="${item.id}:${payment.id}" type="button">Delete</button>
           </div>
         </div>
-      `).join("")
+      `,
+        )
+        .join("")
     : createEmptyState("Belum ada riwayat pembayaran", "Tambahkan pembayaran pertama dari tombol aksi pada kartu.");
 
   elements.debtDetailContent.innerHTML = `
@@ -1826,7 +1852,7 @@ function escapeHtml(value) {
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
-    .replaceAll("\"", "&quot;");
+    .replaceAll('"', "&quot;");
 }
 
 function getExportRows() {
@@ -1836,19 +1862,19 @@ function getExportRows() {
     .map((item) => ({
       tanggal: item.date,
       jenis: getTransactionTypeLabel(item.type),
-      dompet: item.type === "transfer"
-        ? `${getWalletById(item.fromWalletId)?.name || "-"} -> ${getWalletById(item.toWalletId)?.name || "-"}`
-        : (getWalletById(item.walletId)?.name || "-"),
-      kategori: item.type === "transfer" ? "Transfer" : (getCategoryById(item.categoryId)?.name || "-"),
+      dompet: item.type === "transfer" ? `${getWalletById(item.fromWalletId)?.name || "-"} -> ${getWalletById(item.toWalletId)?.name || "-"}` : getWalletById(item.walletId)?.name || "-",
+      kategori: item.type === "transfer" ? "Transfer" : getCategoryById(item.categoryId)?.name || "-",
       deskripsi: item.description || "-",
       catatan: item.note || "-",
-      jumlah: Number(item.amount || 0)
+      jumlah: Number(item.amount || 0),
     }));
 }
 
 function buildExcelHtml() {
   const rows = getExportRows();
-  const tableRows = rows.map((row) => `
+  const tableRows = rows
+    .map(
+      (row) => `
     <tr>
       <td>${escapeHtml(row.tanggal)}</td>
       <td>${escapeHtml(row.jenis)}</td>
@@ -1858,7 +1884,9 @@ function buildExcelHtml() {
       <td>${escapeHtml(row.catatan)}</td>
       <td>${row.jumlah}</td>
     </tr>
-  `).join("");
+  `,
+    )
+    .join("");
 
   return `
     <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">
@@ -1897,7 +1925,9 @@ function buildExcelHtml() {
 
 function buildPrintableReportHtml() {
   const rows = getExportRows();
-  const itemsMarkup = rows.map((row) => `
+  const itemsMarkup = rows
+    .map(
+      (row) => `
     <tr>
       <td>${escapeHtml(row.tanggal)}</td>
       <td>${escapeHtml(row.jenis)}</td>
@@ -1906,11 +1936,13 @@ function buildPrintableReportHtml() {
       <td>${escapeHtml(row.deskripsi)}</td>
       <td style="text-align:right;">${escapeHtml(formatCurrency(row.jumlah))}</td>
     </tr>
-  `).join("");
+  `,
+    )
+    .join("");
   const totals = {
     income: state.transactions.filter((item) => item.type === "income").reduce((sum, item) => sum + item.amount, 0),
     expense: state.transactions.filter((item) => item.type === "expense").reduce((sum, item) => sum + item.amount, 0),
-    balance: getWalletTotalBalance()
+    balance: getWalletTotalBalance(),
   };
 
   return `
@@ -1961,23 +1993,31 @@ async function loadSystemInfo() {
   try {
     const response = await apiRequest("/api/system/info");
     state.systemInfo = response;
-    const accessItems = (response.localUrls || []).map((url) => `
+    const accessItems = (response.localUrls || [])
+      .map(
+        (url) => `
       <div class="list-item">
         <div>
           <strong>${url.includes("localhost") ? "Alamat Lokal" : "Alamat Jaringan"}</strong>
           <p class="mt-1 text-sm text-slate-300">${url}</p>
         </div>
       </div>
-    `).join("");
+    `,
+      )
+      .join("");
     const backupItems = (response.backups || []).length
-      ? response.backups.map((backup) => `
+      ? response.backups
+          .map(
+            (backup) => `
           <div class="list-item">
             <div>
               <strong>${backup.file}</strong>
-              <p class="mt-1 text-sm text-slate-300">${new Date(backup.createdAt).toLocaleString("id-ID")} â€¢ ${(backup.size / 1024 / 1024).toFixed(2)} MB</p>
+              <p class="mt-1 text-sm text-slate-300">${new Date(backup.createdAt).toLocaleString("id-ID")} &bull; ${(backup.size / 1024 / 1024).toFixed(2)} MB</p>
             </div>
           </div>
-        `).join("")
+        `,
+          )
+          .join("")
       : `<div class="empty-state">Belum ada backup database.</div>`;
 
     elements.systemInfoPanel.innerHTML = `
@@ -2060,7 +2100,9 @@ async function loadSecurityActivity() {
       elements.securityActivityList.innerHTML = `<div class="empty-state">Belum ada aktivitas keamanan.</div>`;
       return;
     }
-    elements.securityActivityList.innerHTML = logs.map((log) => `
+    elements.securityActivityList.innerHTML = logs
+      .map(
+        (log) => `
       <div class="list-item">
         <div>
           <strong>${log.action.replaceAll("_", " ")}</strong>
@@ -2068,7 +2110,9 @@ async function loadSecurityActivity() {
         </div>
         <span class="text-sm text-slate-400">${log.createdAt.slice(0, 16).replace("T", " ")}</span>
       </div>
-    `).join("");
+    `,
+      )
+      .join("");
   } catch (error) {
     elements.securityActivityList.innerHTML = `<div class="empty-state">${error.message}</div>`;
   }
@@ -2145,12 +2189,7 @@ function resolveConfirmModal(result) {
   }
 }
 
-function showConfirmModal({
-  title = "Konfirmasi Aksi",
-  message = "Aksi ini tidak bisa dibatalkan.",
-  confirmLabel = "Lanjutkan",
-  tone = "danger"
-} = {}) {
+function showConfirmModal({ title = "Konfirmasi Aksi", message = "Aksi ini tidak bisa dibatalkan.", confirmLabel = "Lanjutkan", tone = "danger" } = {}) {
   if (confirmModalResolver) {
     confirmModalResolver(false);
     confirmModalResolver = null;
@@ -2294,15 +2333,11 @@ function animateNumbers(container) {
       const progress = Math.min((now - start) / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
       const current = target * eased;
-      element.textContent = format === "percent"
-        ? `${Math.round(current)}%`
-        : formatCurrency(current);
+      element.textContent = format === "percent" ? `${Math.round(current)}%` : formatCurrency(current);
       if (progress < 1) {
         requestAnimationFrame(frame);
       } else {
-        element.textContent = format === "percent"
-          ? `${Math.round(target)}%`
-          : formatCurrency(target);
+        element.textContent = format === "percent" ? `${Math.round(target)}%` : formatCurrency(target);
       }
     }
 
@@ -2348,8 +2383,8 @@ function attachEvents() {
         method: "POST",
         body: JSON.stringify({
           email: elements.loginEmail.value.trim(),
-          password: elements.loginPassword.value
-        })
+          password: elements.loginPassword.value,
+        }),
       });
       state.authUser = response.user;
       state.activeView = "dashboard";
@@ -2372,8 +2407,8 @@ function attachEvents() {
         body: JSON.stringify({
           name: elements.registerName.value.trim(),
           email: elements.registerEmail.value.trim(),
-          password: elements.registerPassword.value
-        })
+          password: elements.registerPassword.value,
+        }),
       });
       state.authUser = response.user;
       state.activeView = "dashboard";
@@ -2391,6 +2426,8 @@ function attachEvents() {
     const button = event.target.closest("[data-view]");
     if (!button) return;
     state.activeView = button.dataset.view;
+    const menuName = button.innerText.trim();
+    document.title = `Dompetku. | ${menuName}`;
     state.activeTransactionDetailId = null;
     state.activeDebtActionId = null;
     render();
@@ -2402,7 +2439,7 @@ function attachEvents() {
     state.filters = state.filters || structuredClone(defaultUiState.filters);
     state.filters.debts = {
       ...structuredClone(defaultUiState.filters.debts),
-      ...(state.filters.debts || {})
+      ...(state.filters.debts || {}),
     };
     state.filters.debts.status = button.dataset.debtFilter;
     state.activeDebtActionId = null;
@@ -2481,7 +2518,7 @@ function attachEvents() {
         title: "Hapus Wallet?",
         message: "Wallet ini akan dihapus beserta transaksi yang terhubung dengannya.",
         confirmLabel: "Hapus Wallet",
-        tone: "danger"
+        tone: "danger",
       });
       if (!approved) return;
       withApi(() => apiRequest(`/api/wallets/${deleteWalletButton.dataset.deleteWallet}`, { method: "DELETE" }));
@@ -2512,7 +2549,7 @@ function attachEvents() {
         title: "Hapus Aset?",
         message: "Aset ini akan dihapus dari portfolio kamu. Riwayat transaksi tidak ikut berubah.",
         confirmLabel: "Hapus Aset",
-        tone: "danger"
+        tone: "danger",
       });
       if (!approved) return;
       withApi(() => apiRequest(`/api/assets/${deleteAssetButton.dataset.deleteAsset}`, { method: "DELETE" }));
@@ -2537,7 +2574,7 @@ function attachEvents() {
         title: "Hapus Kategori?",
         message: "Kategori ini akan dihapus beserta transaksi yang memakai kategori tersebut.",
         confirmLabel: "Hapus Kategori",
-        tone: "danger"
+        tone: "danger",
       });
       if (!approved) return;
       withApi(() => apiRequest(`/api/categories/${deleteCategoryButton.dataset.deleteCategory}`, { method: "DELETE" }));
@@ -2566,7 +2603,7 @@ function attachEvents() {
         title: "Hapus Budget?",
         message: "Budget untuk kategori dan periode ini akan dihapus dari perencanaan kamu.",
         confirmLabel: "Hapus Budget",
-        tone: "danger"
+        tone: "danger",
       });
       if (!approved) return;
       withApi(() => apiRequest(`/api/budgets/${deleteBudgetButton.dataset.deleteBudget}`, { method: "DELETE" }));
@@ -2614,7 +2651,7 @@ function attachEvents() {
         title: "Hapus Transaksi?",
         message: "Riwayat transaksi ini akan dihapus permanen dari catatan keuangan.",
         confirmLabel: "Hapus Transaksi",
-        tone: "danger"
+        tone: "danger",
       });
       if (!approved) return;
       withApi(() => apiRequest(`/api/transactions/${deleteTransactionButton.dataset.deleteTransaction}`, { method: "DELETE" }));
@@ -2646,7 +2683,7 @@ function attachEvents() {
         title: "Hapus Data Hutang/Piutang?",
         message: "Data ini beserta progres pembayarannya akan dihapus dari daftar hutang piutang.",
         confirmLabel: "Hapus Data",
-        tone: "danger"
+        tone: "danger",
       });
       if (!approved) return;
       if (state.activeDebtDetailId === deleteDebtButton.dataset.deleteDebt) {
@@ -2680,7 +2717,7 @@ function attachEvents() {
         title: "Hapus Riwayat Pembayaran?",
         message: "Riwayat pembayaran ini akan dihapus dari detail hutang/piutang.",
         confirmLabel: "Hapus Riwayat",
-        tone: "danger"
+        tone: "danger",
       });
       if (!approved) return;
       const [debtId, paymentId] = deletePaymentButton.dataset.deletePayment.split(":");
@@ -2864,15 +2901,14 @@ function attachEvents() {
     const payload = {
       id: elements.walletId.value || crypto.randomUUID(),
       name: elements.walletName.value.trim(),
-      balance: parseAmountInput(elements.walletBalance.value)
+      balance: parseAmountInput(elements.walletBalance.value),
     };
-    await withApi(() => apiRequest(
-      elements.walletId.value ? `/api/wallets/${payload.id}` : "/api/wallets",
-      {
+    await withApi(() =>
+      apiRequest(elements.walletId.value ? `/api/wallets/${payload.id}` : "/api/wallets", {
         method: elements.walletId.value ? "PUT" : "POST",
-        body: JSON.stringify(payload)
-      }
-    ));
+        body: JSON.stringify(payload),
+      }),
+    );
     closeModal("walletModal");
     resetWalletForm();
   });
@@ -2892,15 +2928,14 @@ function attachEvents() {
       currentValue: parseAmountInput(elements.assetCurrentValue.value),
       purchaseValue: parseAmountInput(elements.assetPurchaseValue.value),
       acquiredDate: elements.assetAcquiredDate.value || "",
-      note: elements.assetNote.value.trim()
+      note: elements.assetNote.value.trim(),
     };
-    await withApi(() => apiRequest(
-      elements.assetId.value ? `/api/assets/${payload.id}` : "/api/assets",
-      {
+    await withApi(() =>
+      apiRequest(elements.assetId.value ? `/api/assets/${payload.id}` : "/api/assets", {
         method: elements.assetId.value ? "PUT" : "POST",
-        body: JSON.stringify(payload)
-      }
-    ));
+        body: JSON.stringify(payload),
+      }),
+    );
     closeModal("assetModal");
     resetAssetForm();
   });
@@ -2910,15 +2945,14 @@ function attachEvents() {
     const payload = {
       id: elements.categoryId.value || crypto.randomUUID(),
       name: elements.categoryName.value.trim(),
-      type: elements.categoryType.value
+      type: elements.categoryType.value,
     };
-    await withApi(() => apiRequest(
-      elements.categoryId.value ? `/api/categories/${payload.id}` : "/api/categories",
-      {
+    await withApi(() =>
+      apiRequest(elements.categoryId.value ? `/api/categories/${payload.id}` : "/api/categories", {
         method: elements.categoryId.value ? "PUT" : "POST",
-        body: JSON.stringify(payload)
-      }
-    ));
+        body: JSON.stringify(payload),
+      }),
+    );
     closeModal("categoryModal");
     resetCategoryForm();
   });
@@ -2935,15 +2969,14 @@ function attachEvents() {
       amount: parseAmountInput(elements.budgetAmount.value),
       month: elements.budgetMonth.value || getBudgetMonthValue(),
       carryOverEnabled: elements.budgetCarryOver.checked,
-      note: elements.budgetNote.value.trim()
+      note: elements.budgetNote.value.trim(),
     };
-    await withApi(() => apiRequest(
-      elements.budgetId.value ? `/api/budgets/${payload.id}` : "/api/budgets",
-      {
+    await withApi(() =>
+      apiRequest(elements.budgetId.value ? `/api/budgets/${payload.id}` : "/api/budgets", {
         method: elements.budgetId.value ? "PUT" : "POST",
-        body: JSON.stringify(payload)
-      }
-    ));
+        body: JSON.stringify(payload),
+      }),
+    );
     state.filters.budgeting.month = payload.month;
     closeModal("budgetModal");
     resetBudgetForm();
@@ -2955,15 +2988,14 @@ function attachEvents() {
       id: elements.savingsTargetId.value || crypto.randomUUID(),
       month: elements.savingsTargetMonth.value || getBudgetMonthValue(),
       amount: parseAmountInput(elements.savingsTargetAmount.value),
-      note: elements.savingsTargetNote.value.trim()
+      note: elements.savingsTargetNote.value.trim(),
     };
-    await withApi(() => apiRequest(
-      elements.savingsTargetId.value ? `/api/savings-targets/${payload.id}` : "/api/savings-targets",
-      {
+    await withApi(() =>
+      apiRequest(elements.savingsTargetId.value ? `/api/savings-targets/${payload.id}` : "/api/savings-targets", {
         method: elements.savingsTargetId.value ? "PUT" : "POST",
-        body: JSON.stringify(payload)
-      }
-    ));
+        body: JSON.stringify(payload),
+      }),
+    );
     closeModal("savingsTargetModal");
     resetSavingsTargetForm();
   });
@@ -2982,15 +3014,14 @@ function attachEvents() {
       amount: parseAmountInput(elements.flowAmount.value),
       date: normalizeDate(elements.flowDate.value),
       description: elements.flowDescription.value.trim(),
-      note: elements.flowNote.value.trim()
+      note: elements.flowNote.value.trim(),
     };
-    await withApi(() => apiRequest(
-      elements.flowTransactionId.value ? `/api/transactions/${payload.id}` : "/api/transactions",
-      {
+    await withApi(() =>
+      apiRequest(elements.flowTransactionId.value ? `/api/transactions/${payload.id}` : "/api/transactions", {
         method: elements.flowTransactionId.value ? "PUT" : "POST",
-        body: JSON.stringify(payload)
-      }
-    ));
+        body: JSON.stringify(payload),
+      }),
+    );
     closeModal("transactionModal");
     resetTransactionForms();
   });
@@ -3013,15 +3044,14 @@ function attachEvents() {
       amount: parseAmountInput(elements.transferAmount.value),
       date: normalizeDate(elements.transferDate.value),
       description: elements.transferDescription.value.trim(),
-      note: ""
+      note: "",
     };
-    await withApi(() => apiRequest(
-      elements.transferId.value ? `/api/transactions/${payload.id}` : "/api/transactions",
-      {
+    await withApi(() =>
+      apiRequest(elements.transferId.value ? `/api/transactions/${payload.id}` : "/api/transactions", {
         method: elements.transferId.value ? "PUT" : "POST",
-        body: JSON.stringify(payload)
-      }
-    ));
+        body: JSON.stringify(payload),
+      }),
+    );
     closeModal("transactionModal");
     resetTransactionForms();
   });
@@ -3039,15 +3069,14 @@ function attachEvents() {
       walletId: elements.debtWalletId.value,
       amount: parseAmountInput(elements.debtAmount.value),
       date: normalizeDate(elements.debtDate.value),
-      note: elements.debtNote.value.trim()
+      note: elements.debtNote.value.trim(),
     };
-    await withApi(() => apiRequest(
-      elements.debtId.value ? `/api/debts/${payload.id}` : "/api/debts",
-      {
+    await withApi(() =>
+      apiRequest(elements.debtId.value ? `/api/debts/${payload.id}` : "/api/debts", {
         method: elements.debtId.value ? "PUT" : "POST",
-        body: JSON.stringify(payload)
-      }
-    ));
+        body: JSON.stringify(payload),
+      }),
+    );
     closeModal("debtModal");
     resetDebtForm();
   });
@@ -3064,18 +3093,17 @@ function attachEvents() {
       return;
     }
     const paymentId = elements.paymentId.value;
-    await withApi(() => apiRequest(
-      paymentId ? `/api/debts/${debtId}/payments/${paymentId}` : `/api/debts/${debtId}/payments`,
-      {
+    await withApi(() =>
+      apiRequest(paymentId ? `/api/debts/${debtId}/payments/${paymentId}` : `/api/debts/${debtId}/payments`, {
         method: paymentId ? "PUT" : "POST",
         body: JSON.stringify({
           id: paymentId || crypto.randomUUID(),
           walletId: elements.paymentWalletId.value,
           amount: parseAmountInput(elements.paymentAmount.value),
-          date: normalizeDate(elements.paymentDate.value)
-        })
-      }
-    ));
+          date: normalizeDate(elements.paymentDate.value),
+        }),
+      }),
+    );
     closeModal("paymentModal");
     if (state.activeDebtDetailId) {
       renderDebtDetailModal(state.activeDebtDetailId);
@@ -3091,8 +3119,8 @@ function attachEvents() {
         method: "PUT",
         body: JSON.stringify({
           name: elements.profileName.value.trim(),
-          email: elements.profileEmail.value.trim()
-        })
+          email: elements.profileEmail.value.trim(),
+        }),
       });
       state.authUser = response.user;
       render();
@@ -3115,8 +3143,8 @@ function attachEvents() {
         method: "PUT",
         body: JSON.stringify({
           currentPassword: elements.currentPassword.value,
-          newPassword: elements.newPassword.value
-        })
+          newPassword: elements.newPassword.value,
+        }),
       });
       elements.passwordForm.reset();
       showProfileStatus("Password berhasil diganti.");
@@ -3184,7 +3212,7 @@ function attachEvents() {
       const payload = JSON.parse(text);
       await apiRequest("/api/data/import", {
         method: "POST",
-        body: JSON.stringify({ payload })
+        body: JSON.stringify({ payload }),
       });
       await refreshAndRender();
       showProfileStatus("Data berhasil diimport.");
@@ -3216,7 +3244,7 @@ function attachEvents() {
       title: "Hapus Akun Permanen?",
       message: "Seluruh data akun, transaksi, budget, dan riwayat aktivitas akan ikut terhapus.",
       confirmLabel: "Hapus Akun",
-      tone: "danger"
+      tone: "danger",
     });
     if (!approved) {
       return;
@@ -3224,7 +3252,7 @@ function attachEvents() {
     try {
       await apiRequest("/api/auth/delete-account", {
         method: "POST",
-        body: JSON.stringify({ password: elements.deleteAccountPassword.value })
+        body: JSON.stringify({ password: elements.deleteAccountPassword.value }),
       });
       clearAppData();
       closeAllModals();
@@ -3263,6 +3291,4 @@ async function initializeApp() {
 
 initializeApp();
 
-
-
-
+document.getElementById("currentYear").textContent = new Date().getFullYear();

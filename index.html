@@ -1,352 +1,739 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Keuangan Pribadi</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>ðŸ‘›</text></svg>">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = { theme: { extend: { fontFamily: { sans: ["Plus Jakarta Sans", "sans-serif"] } } } };
-  </script>
-  <link rel="stylesheet" href="./styles.css">
-</head>
-<body class="font-sans antialiased">
-  <section class="auth-shell hidden min-h-screen px-6 py-8" id="authShell">
-    <div class="auth-backdrop-shape"></div>
-    <div class="auth-card w-full max-w-xl rounded-[32px] border border-white/10 bg-slate-950/70 p-8 shadow-2xl backdrop-blur-2xl">
-      <div class="mb-6 grid gap-3">
-        <p class="eyebrow">DompetKu Account</p>
-        <h1 class="text-3xl font-extrabold tracking-tight text-slate-50">Masuk ke ruang keuangan pribadi kamu</h1>
-        <p class="text-sm leading-6 text-slate-300">Satu akun untuk data yang aman, sinkron, dan terpisah antar pengguna.</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dompetku.</title>
+    <link rel="icon" type="image/png" href="./logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { theme: { extend: { fontFamily: { sans: ["Plus Jakarta Sans", "sans-serif"] } } } };
+    </script>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="font-sans antialiased">
+    <section class="auth-shell hidden min-h-screen px-6 py-8" id="authShell">
+      <div class="auth-backdrop-shape"></div>
+      <div class="auth-card w-full max-w-xl rounded-[32px] border border-white/10 bg-slate-950/70 p-8 shadow-2xl backdrop-blur-2xl">
+        <div class="mb-6 grid gap-3">
+          <p class="eyebrow">DompetKu. Account</p>
+          <h1 class="text-3xl font-extrabold tracking-tight text-slate-50">Selamat Datang di Dompetku.</h1>
+          <p class="text-sm leading-6 text-slate-300">Satu aplikasi untuk mengelola keuangan pribadi Anda.</p>
+        </div>
+
+        <div class="auth-tabs grid grid-cols-2 gap-3 rounded-[22px] border border-white/10 bg-white/5 p-1.5">
+          <button class="tab-btn active inline-flex items-center justify-center rounded-[18px] px-4 py-3 text-sm font-semibold text-slate-50 transition" type="button" data-auth-tab="login">Login</button>
+          <button class="tab-btn inline-flex items-center justify-center rounded-[18px] px-4 py-3 text-sm font-semibold text-slate-300 transition" type="button" data-auth-tab="register">Register</button>
+        </div>
+
+        <form id="loginForm" class="form-grid auth-panel mt-5 grid gap-4">
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Email</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="email" id="loginEmail" required />
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Password</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="password" id="loginPassword" required />
+          </label>
+          <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Masuk</button>
+        </form>
+
+        <form id="registerForm" class="form-grid auth-panel mt-5 hidden gap-4">
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Nama</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" id="registerName" required />
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Email</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="email" id="registerEmail" required />
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Password</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="password" id="registerPassword" minlength="6" required />
+          </label>
+          <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Buat Akun</button>
+        </form>
+
+        <p id="authStatus" class="auth-status hidden mt-5 rounded-2xl px-4 py-3 text-sm font-semibold"></p>
       </div>
 
-      <div class="auth-tabs grid grid-cols-2 gap-3 rounded-[22px] border border-white/10 bg-white/5 p-1.5">
-        <button class="tab-btn active inline-flex items-center justify-center rounded-[18px] px-4 py-3 text-sm font-semibold text-slate-50 transition" type="button" data-auth-tab="login">Login</button>
-        <button class="tab-btn inline-flex items-center justify-center rounded-[18px] px-4 py-3 text-sm font-semibold text-slate-300 transition" type="button" data-auth-tab="register">Register</button>
-      </div>
+      <!-- Bagian Footer / Copyright -->
+      <footer class="mt-10 text-center text-sm text-slate-400">
+        <p>&copy; <span id="currentYear"></span> Dompetku &reg; - Aplikasi Pencatat Keuangan Anda</p>
+        <p class="mt-1 text-xs text-slate-500">Dibuat dengan ☕ dan ❤️ oleh Aziezkdr</p>
+      </footer>
+    </section>
 
-      <form id="loginForm" class="form-grid auth-panel mt-5 grid gap-4">
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Email</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="email" id="loginEmail" required>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Password</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="password" id="loginPassword" required>
-        </label>
-        <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Masuk</button>
-      </form>
-
-      <form id="registerForm" class="form-grid auth-panel mt-5 hidden gap-4">
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Nama</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" id="registerName" required>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Email</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="email" id="registerEmail" required>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Password</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="password" id="registerPassword" minlength="6" required>
-        </label>
-        <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Buat Akun</button>
-      </form>
-
-      <p id="authStatus" class="auth-status hidden mt-5 rounded-2xl px-4 py-3 text-sm font-semibold"></p>
-    </div>
-  </section>
-
-  <div class="app-shell hidden bg-slate-950/20" id="appShell">
-    <aside class="sidebar">
-      <div class="brand-card">
-        <div class="brand-main">
-          <div class="brand-icon">Rp</div>
-          <div class="brand-copy">
-            <p class="eyebrow">Personal Finance</p>
-            <h1>DompetKu</h1>
+    <div class="app-shell hidden bg-slate-950/20" id="appShell">
+      <aside class="sidebar">
+        <div class="brand-card">
+          <div class="brand-main">
+            <div class="brand-icon">D</div>
+            <div class="brand-copy">
+              <p class="eyebrow">Personal Finance</p>
+              <h1>DompetKu.</h1>
+            </div>
           </div>
+          <button
+            class="icon-btn sidebar-toggle-btn group relative flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/5 transition-all duration-200 hover:bg-white/15 hover:border-white/20 active:scale-95"
+            id="sidebarCollapseToggle"
+            type="button"
+            aria-label="Ringkas sidebar"
+            title="Ringkas sidebar"
+          >
+            <svg
+              class="sidebar-toggle-svg w-5 h-5 text-slate-300 transition-transform duration-300 ease-in-out group-hover:text-white"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
         </div>
-        <button class="icon-btn sidebar-toggle-btn group relative flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/5 transition-all duration-200 hover:bg-white/15 hover:border-white/20 active:scale-95" id="sidebarCollapseToggle" type="button" aria-label="Ringkas sidebar" title="Ringkas sidebar">
-          <svg class="sidebar-toggle-svg w-5 h-5 text-slate-300 transition-transform duration-300 ease-in-out group-hover:text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-        </button>
-      </div>
 
-      <nav class="sidebar-nav" id="sidebarNav">
-        <button class="nav-link active" data-view="dashboard" type="button" title="Dashboard" aria-label="Dashboard">
-          <span class="nav-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="3" y="3" width="7" height="7" rx="2"></rect>
-              <rect x="14" y="3" width="7" height="4" rx="2"></rect>
-              <rect x="14" y="10" width="7" height="11" rx="2"></rect>
-              <rect x="3" y="14" width="7" height="7" rx="2"></rect>
-            </svg>
-          </span>
-          <span class="nav-label">Dashboard</span>
-        </button>
-        <button class="nav-link" data-view="wallet" type="button" title="Wallet" aria-label="Wallet">
-          <span class="nav-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M3 7.5A2.5 2.5 0 0 1 5.5 5h11A2.5 2.5 0 0 1 19 7.5V9h-2.5A2.5 2.5 0 0 0 14 11.5v1A2.5 2.5 0 0 0 16.5 15H19v1.5A2.5 2.5 0 0 1 16.5 19h-11A2.5 2.5 0 0 1 3 16.5v-9Z"></path>
-              <path d="M19 9h1.5A1.5 1.5 0 0 1 22 10.5v3a1.5 1.5 0 0 1-1.5 1.5H19"></path>
-              <circle cx="16.5" cy="12" r=".5" fill="currentColor"></circle>
-            </svg>
-          </span>
-          <span class="nav-label">Wallet</span>
-        </button>
+        <nav class="sidebar-nav" id="sidebarNav">
+          <button class="nav-link active" data-view="dashboard" type="button" title="Dashboard" aria-label="Dashboard">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="3" width="7" height="7" rx="2"></rect>
+                <rect x="14" y="3" width="7" height="4" rx="2"></rect>
+                <rect x="14" y="10" width="7" height="11" rx="2"></rect>
+                <rect x="3" y="14" width="7" height="7" rx="2"></rect>
+              </svg>
+            </span>
+            <span class="nav-label">Dashboard</span>
+          </button>
+          <button class="nav-link" data-view="wallet" type="button" title="Wallet" aria-label="Wallet">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 7.5A2.5 2.5 0 0 1 5.5 5h11A2.5 2.5 0 0 1 19 7.5V9h-2.5A2.5 2.5 0 0 0 14 11.5v1A2.5 2.5 0 0 0 16.5 15H19v1.5A2.5 2.5 0 0 1 16.5 19h-11A2.5 2.5 0 0 1 3 16.5v-9Z"></path>
+                <path d="M19 9h1.5A1.5 1.5 0 0 1 22 10.5v3a1.5 1.5 0 0 1-1.5 1.5H19"></path>
+                <circle cx="16.5" cy="12" r=".5" fill="currentColor"></circle>
+              </svg>
+            </span>
+            <span class="nav-label">Wallet</span>
+          </button>
 
-        <button class="mobile-fab-btn" id="mobileFabAddBtn" type="button" title="Tambah Transaksi Baru" aria-label="Tambah Transaksi">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="5" x2="12" y2="19"></line>
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-          </svg>
-        </button>
+          <button class="mobile-fab-btn" id="mobileFabAddBtn" type="button" title="Tambah Transaksi Baru" aria-label="Tambah Transaksi">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+          </button>
 
-        <button class="nav-link" data-view="transactions" type="button" title="Transaksi" aria-label="Transaksi">
-          <span class="nav-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M7 7h10"></path>
-              <path d="M7 12h10"></path>
-              <path d="M7 17h6"></path>
-              <rect x="3" y="4" width="18" height="16" rx="3"></rect>
-            </svg>
-          </span>
-          <span class="nav-label">Transaksi</span>
-        </button>
-        <button class="nav-link" data-view="profile" type="button" title="Profil" aria-label="Profil">
-          <span class="nav-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-          </span>
-          <span class="nav-label">Profil</span>
-        </button>
+          <button class="nav-link" data-view="transactions" type="button" title="Transaksi" aria-label="Transaksi">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M7 7h10"></path>
+                <path d="M7 12h10"></path>
+                <path d="M7 17h6"></path>
+                <rect x="3" y="4" width="18" height="16" rx="3"></rect>
+              </svg>
+            </span>
+            <span class="nav-label">Transaksi</span>
+          </button>
 
-        <button class="nav-link desktop-only-link" data-view="categories" type="button" title="Kategori" aria-label="Kategori">
-          <span class="nav-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M20 10.5V6a2 2 0 0 0-2-2h-4.5"></path>
-              <path d="M4 13.5V18a2 2 0 0 0 2 2h4.5"></path>
-              <path d="M14 4 4 14"></path>
-              <path d="m9 4 5 5"></path>
-              <path d="m10 15 5 5"></path>
-            </svg>
-          </span>
-          <span class="nav-label">Kategori</span>
-        </button>
-        <button class="nav-link desktop-only-link" data-view="budgeting" type="button" title="Budgeting" aria-label="Budgeting">
-          <span class="nav-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M12 3v18"></path>
-              <path d="M3 12h18"></path>
-              <circle cx="12" cy="12" r="8"></circle>
-            </svg>
-          </span>
-          <span class="nav-label">Budgeting</span>
-        </button>
-        <button class="nav-link desktop-only-link" data-view="debts" type="button" title="Hutang Piutang" aria-label="Hutang Piutang">
-          <span class="nav-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M12 3v18"></path>
-              <path d="M17 7H9.5a2.5 2.5 0 0 0 0 5H14.5a2.5 2.5 0 0 1 0 5H7"></path>
-            </svg>
-          </span>
-          <span class="nav-label">Hutang Piutang</span>
-        </button>
-        <button class="nav-link desktop-only-link" data-view="assets" type="button" title="Aset" aria-label="Aset">
-          <span class="nav-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M4 18h16"></path>
-              <path d="M7 18V8"></path>
-              <path d="M12 18V5"></path>
-              <path d="M17 18v-6"></path>
-              <path d="M5 8.5 12 5l7 7"></path>
-            </svg>
-          </span>
-          <span class="nav-label">Aset</span>
-        </button>
-      </nav>
+          <button class="nav-link desktop-only-link" data-view="categories" type="button" title="Kategori" aria-label="Kategori">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 10.5V6a2 2 0 0 0-2-2h-4.5"></path>
+                <path d="M4 13.5V18a2 2 0 0 0 2 2h4.5"></path>
+                <path d="M14 4 4 14"></path>
+                <path d="m9 4 5 5"></path>
+                <path d="m10 15 5 5"></path>
+              </svg>
+            </span>
+            <span class="nav-label">Kategori</span>
+          </button>
+          <button class="nav-link desktop-only-link" data-view="budgeting" type="button" title="Budgeting" aria-label="Budgeting">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 3v18"></path>
+                <path d="M3 12h18"></path>
+                <circle cx="12" cy="12" r="8"></circle>
+              </svg>
+            </span>
+            <span class="nav-label">Budgeting</span>
+          </button>
+          <button class="nav-link desktop-only-link" data-view="debts" type="button" title="Hutang Piutang" aria-label="Hutang Piutang">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 3v18"></path>
+                <path d="M17 7H9.5a2.5 2.5 0 0 0 0 5H14.5a2.5 2.5 0 0 1 0 5H7"></path>
+              </svg>
+            </span>
+            <span class="nav-label">Hutang Piutang</span>
+          </button>
+          <button class="nav-link desktop-only-link" data-view="assets" type="button" title="Aset" aria-label="Aset">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 18h16"></path>
+                <path d="M7 18V8"></path>
+                <path d="M12 18V5"></path>
+                <path d="M17 18v-6"></path>
+                <path d="M5 8.5 12 5l7 7"></path>
+              </svg>
+            </span>
+            <span class="nav-label">Aset</span>
+          </button>
 
-      <div class="sidebar-footer">
-        <button class="ghost-btn" id="themeToggle">Dark Mode</button>
-      </div>
-    </aside>
+          <button class="nav-link" data-view="profile" type="button" title="Profil" aria-label="Profil">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </span>
+            <span class="nav-label">Profil</span>
+          </button>
+        </nav>
 
-    <main class="main-content">
-      <header class="topbar flex items-center justify-between rounded-[24px] border border-white/10 backdrop-blur-xl px-5 py-4">
-        <div>
-          <p class="eyebrow">Aplikasi Web Keuangan Pribadi</p>
-          <h2 id="pageTitle">Dashboard</h2>
+        <div class="sidebar-footer">
+          <button class="ghost-btn" id="themeToggle">Dark Mode</button>
         </div>
-        <button class="theme-toggle-btn icon-btn flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-2xl border border-white/15 bg-white/5 text-slate-100 transition hover:bg-white/10" id="topThemeToggle" type="button" title="Ganti Tema" aria-label="Ganti Tema">
-          <svg class="theme-sun-icon w-5 h-5 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="4"></circle>
-            <path d="M12 2v2"></path>
-            <path d="M12 20v2"></path>
-            <path d="m4.93 4.93 1.41 1.41"></path>
-            <path d="m17.66 17.66 1.41 1.41"></path>
-            <path d="M2 12h2"></path>
-            <path d="M20 12h2"></path>
-            <path d="m6.34 17.66-1.41 1.41"></path>
-            <path d="m19.07 4.93-1.41 1.41"></path>
-          </svg>
-          <svg class="theme-moon-icon w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-          </svg>
-        </button>
-      </header>
+      </aside>
 
-      <section class="view active space-y-6" id="dashboardView">
-        <div class="section-heading flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <main class="main-content">
+        <header class="topbar flex items-center justify-between rounded-[24px] border border-white/10 backdrop-blur-xl px-5 py-4">
           <div>
-            <p class="eyebrow">Ringkasan</p>
-            <h3>Dashboard Keuangan</h3>
+            <p class="eyebrow">Aplikasi Keuangan Pribadi</p>
+            <h2 id="pageTitle">Dashboard</h2>
           </div>
-          <div class="filters-inline dashboard-filters">
-            <button class="icon-btn icon-eye" id="dashboardVisibilityToggle" title="Tampilkan atau sembunyikan nominal" aria-label="Toggle nominal"></button>
-            <select id="dashboardBalanceMode">
-              <option value="running">Saldo Berjalan</option>
-              <option value="period">Saldo Periode</option>
-            </select>
-            <select id="dashboardRangeType">
-              <option value="month">Per Bulan</option>
-              <option value="custom">Custom</option>
-            </select>
-            <input type="month" id="dashboardMonth">
-            <input type="date" id="dashboardStart" class="hidden">
-            <input type="date" id="dashboardEnd" class="hidden">
-          </div>
-        </div>
+          <button
+            class="theme-toggle-btn icon-btn flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-2xl border border-white/15 bg-white/5 text-slate-100 transition hover:bg-white/10"
+            id="topThemeToggle"
+            type="button"
+            title="Ganti Tema"
+            aria-label="Ganti Tema"
+          >
+            <svg class="theme-sun-icon w-5 h-5 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2"></path>
+              <path d="M12 20v2"></path>
+              <path d="m4.93 4.93 1.41 1.41"></path>
+              <path d="m17.66 17.66 1.41 1.41"></path>
+              <path d="M2 12h2"></path>
+              <path d="M20 12h2"></path>
+              <path d="m6.34 17.66-1.41 1.41"></path>
+              <path d="m19.07 4.93-1.41 1.41"></path>
+            </svg>
+            <svg class="theme-moon-icon w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+            </svg>
+          </button>
+        </header>
 
-        <div class="stats-grid" id="dashboardStats"></div>
-
-        <div class="dashboard-quick-nav space-y-3">
-          <p class="eyebrow">Menu Pintas Keuangan</p>
-          <div class="grid grid-cols-2 gap-2.5 sm:gap-3.5 sm:grid-cols-4">
-            <button type="button" data-quick-view="categories" class="quick-nav-card group flex flex-row sm:flex-col items-center sm:items-start gap-3 rounded-[20px] border border-white/10 bg-slate-900/60 p-3 sm:p-4 text-left backdrop-blur-xl transition hover:border-cyan-400/50 hover:bg-white/10 hover:shadow-lg min-w-0">
-              <div class="quick-nav-icon flex h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 group-hover:scale-105 transition-transform">
-                <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M20 10.5V6a2 2 0 0 0-2-2h-4.5"></path>
-                  <path d="M4 13.5V18a2 2 0 0 0 2 2h4.5"></path>
-                  <path d="M14 4 4 14"></path>
-                  <path d="m9 4 5 5"></path>
-                  <path d="m10 15 5 5"></path>
-                </svg>
-              </div>
-              <div class="min-w-0 flex-1">
-                <h5 class="text-xs sm:text-sm font-bold text-slate-100 group-hover:text-cyan-400 transition-colors truncate">Kategori</h5>
-                <p class="text-[11px] sm:text-xs text-slate-400 truncate">Kelola & atur tipe</p>
-              </div>
-            </button>
-
-            <button type="button" data-quick-view="budgeting" class="quick-nav-card group flex flex-row sm:flex-col items-center sm:items-start gap-3 rounded-[20px] border border-white/10 bg-slate-900/60 p-3 sm:p-4 text-left backdrop-blur-xl transition hover:border-teal-400/50 hover:bg-white/10 hover:shadow-lg min-w-0">
-              <div class="quick-nav-icon flex h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0 items-center justify-center rounded-xl bg-teal-500/10 text-teal-400 border border-teal-500/20 group-hover:scale-105 transition-transform">
-                <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 3v18"></path>
-                  <path d="M3 12h18"></path>
-                  <circle cx="12" cy="12" r="8"></circle>
-                </svg>
-              </div>
-              <div class="min-w-0 flex-1">
-                <h5 class="text-xs sm:text-sm font-bold text-slate-100 group-hover:text-teal-400 transition-colors truncate">Budgeting</h5>
-                <p class="text-[11px] sm:text-xs text-slate-400 truncate">Anggaran bulanan</p>
-              </div>
-            </button>
-
-            <button type="button" data-quick-view="debts" class="quick-nav-card group flex flex-row sm:flex-col items-center sm:items-start gap-3 rounded-[20px] border border-white/10 bg-slate-900/60 p-3 sm:p-4 text-left backdrop-blur-xl transition hover:border-amber-400/50 hover:bg-white/10 hover:shadow-lg min-w-0">
-              <div class="quick-nav-icon flex h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 group-hover:scale-105 transition-transform">
-                <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 3v18"></path>
-                  <path d="M17 7H9.5a2.5 2.5 0 0 0 0 5H14.5a2.5 2.5 0 0 1 0 5H7"></path>
-                </svg>
-              </div>
-              <div class="min-w-0 flex-1">
-                <h5 class="text-xs sm:text-sm font-bold text-slate-100 group-hover:text-amber-400 transition-colors truncate">Hutang Piutang</h5>
-                <p class="text-[11px] sm:text-xs text-slate-400 truncate">Catatan pelunasan</p>
-              </div>
-            </button>
-
-            <button type="button" data-quick-view="assets" class="quick-nav-card group flex flex-row sm:flex-col items-center sm:items-start gap-3 rounded-[20px] border border-white/10 bg-slate-900/60 p-3 sm:p-4 text-left backdrop-blur-xl transition hover:border-purple-400/50 hover:bg-white/10 hover:shadow-lg min-w-0">
-              <div class="quick-nav-icon flex h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0 items-center justify-center rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20 group-hover:scale-105 transition-transform">
-                <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M4 18h16"></path>
-                  <path d="M7 18V8"></path>
-                  <path d="M12 18V5"></path>
-                  <path d="M17 18v-6"></path>
-                  <path d="M5 8.5 12 5l7 7"></path>
-                </svg>
-              </div>
-              <div class="min-w-0 flex-1">
-                <h5 class="text-xs sm:text-sm font-bold text-slate-100 group-hover:text-purple-400 transition-colors truncate">Aset & Investasi</h5>
-                <p class="text-[11px] sm:text-xs text-slate-400 truncate">Nilai kekayaan</p>
-              </div>
-            </button>
-          </div>
-        </div>
-
-        <div class="grid-two grid gap-5 xl:grid-cols-2">
-          <article class="panel">
-            <div class="panel-head">
-              <div>
-                <p class="eyebrow">Grafik</p>
-                <h4>Seluruh Transaksi</h4>
-              </div>
-            </div>
-            <div id="transactionChart" class="chart-card"></div>
-          </article>
-
-          <article class="panel">
-            <div class="panel-head">
-              <div>
-                <p class="eyebrow">Analitik</p>
-                <h4>Kategori</h4>
-              </div>
-            </div>
-            <div id="categoryChart" class="chart-card"></div>
-          </article>
-        </div>
-
-        <article class="panel">
-          <div class="panel-head">
+        <section class="view active space-y-6" id="dashboardView">
+          <div class="section-heading flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <p class="eyebrow">Insight</p>
-              <h4>Ringkasan Cerdas</h4>
+              <p class="eyebrow">Ringkasan</p>
+              <h3>Dashboard Keuangan</h3>
+            </div>
+            <div class="filters-inline dashboard-filters">
+              <button class="icon-btn icon-eye" id="dashboardVisibilityToggle" title="Tampilkan atau sembunyikan nominal" aria-label="Toggle nominal"></button>
+              <select id="dashboardBalanceMode">
+                <option value="running">Saldo Berjalan</option>
+                <option value="period">Saldo Periode</option>
+              </select>
+              <select id="dashboardRangeType">
+                <option value="month">Per Bulan</option>
+                <option value="custom">Custom</option>
+              </select>
+              <input type="month" id="dashboardMonth" />
+              <input type="date" id="dashboardStart" class="hidden" />
+              <input type="date" id="dashboardEnd" class="hidden" />
             </div>
           </div>
-          <div class="stats-grid insight-grid grid gap-4 md:grid-cols-2 2xl:grid-cols-4" id="dashboardInsights"></div>
-        </article>
-      </section>
 
-      <section class="view space-y-6" id="walletView">
-        <div class="section-heading flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p class="eyebrow">Wallet</p>
-            <h3>Daftar Wallet Aktif</h3>
+          <div class="stats-grid" id="dashboardStats"></div>
+
+          <div class="dashboard-quick-nav space-y-3">
+            <p class="eyebrow">Menu Pintas Keuangan</p>
+            <div class="grid grid-cols-2 gap-2.5 sm:gap-3.5 sm:grid-cols-4">
+              <button
+                type="button"
+                data-quick-view="categories"
+                class="quick-nav-card group flex flex-row sm:flex-col items-center sm:items-start gap-3 rounded-[20px] border border-white/10 bg-slate-900/60 p-3 sm:p-4 text-left backdrop-blur-xl transition hover:border-cyan-400/50 hover:bg-white/10 hover:shadow-lg min-w-0"
+              >
+                <div class="quick-nav-icon flex h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 group-hover:scale-105 transition-transform">
+                  <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 10.5V6a2 2 0 0 0-2-2h-4.5"></path>
+                    <path d="M4 13.5V18a2 2 0 0 0 2 2h4.5"></path>
+                    <path d="M14 4 4 14"></path>
+                    <path d="m9 4 5 5"></path>
+                    <path d="m10 15 5 5"></path>
+                  </svg>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <h5 class="text-xs sm:text-sm font-bold text-slate-100 group-hover:text-cyan-400 transition-colors truncate">Kategori</h5>
+                  <p class="text-[11px] sm:text-xs text-slate-400 truncate">Kelola & atur tipe</p>
+                </div>
+              </button>
+
+              <button
+                type="button"
+                data-quick-view="budgeting"
+                class="quick-nav-card group flex flex-row sm:flex-col items-center sm:items-start gap-3 rounded-[20px] border border-white/10 bg-slate-900/60 p-3 sm:p-4 text-left backdrop-blur-xl transition hover:border-teal-400/50 hover:bg-white/10 hover:shadow-lg min-w-0"
+              >
+                <div class="quick-nav-icon flex h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0 items-center justify-center rounded-xl bg-teal-500/10 text-teal-400 border border-teal-500/20 group-hover:scale-105 transition-transform">
+                  <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3v18"></path>
+                    <path d="M3 12h18"></path>
+                    <circle cx="12" cy="12" r="8"></circle>
+                  </svg>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <h5 class="text-xs sm:text-sm font-bold text-slate-100 group-hover:text-teal-400 transition-colors truncate">Budgeting</h5>
+                  <p class="text-[11px] sm:text-xs text-slate-400 truncate">Anggaran bulanan</p>
+                </div>
+              </button>
+
+              <button
+                type="button"
+                data-quick-view="debts"
+                class="quick-nav-card group flex flex-row sm:flex-col items-center sm:items-start gap-3 rounded-[20px] border border-white/10 bg-slate-900/60 p-3 sm:p-4 text-left backdrop-blur-xl transition hover:border-amber-400/50 hover:bg-white/10 hover:shadow-lg min-w-0"
+              >
+                <div class="quick-nav-icon flex h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 group-hover:scale-105 transition-transform">
+                  <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3v18"></path>
+                    <path d="M17 7H9.5a2.5 2.5 0 0 0 0 5H14.5a2.5 2.5 0 0 1 0 5H7"></path>
+                  </svg>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <h5 class="text-xs sm:text-sm font-bold text-slate-100 group-hover:text-amber-400 transition-colors truncate">Hutang Piutang</h5>
+                  <p class="text-[11px] sm:text-xs text-slate-400 truncate">Catatan pelunasan</p>
+                </div>
+              </button>
+
+              <button
+                type="button"
+                data-quick-view="assets"
+                class="quick-nav-card group flex flex-row sm:flex-col items-center sm:items-start gap-3 rounded-[20px] border border-white/10 bg-slate-900/60 p-3 sm:p-4 text-left backdrop-blur-xl transition hover:border-purple-400/50 hover:bg-white/10 hover:shadow-lg min-w-0"
+              >
+                <div class="quick-nav-icon flex h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0 items-center justify-center rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20 group-hover:scale-105 transition-transform">
+                  <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 18h16"></path>
+                    <path d="M7 18V8"></path>
+                    <path d="M12 18V5"></path>
+                    <path d="M17 18v-6"></path>
+                    <path d="M5 8.5 12 5l7 7"></path>
+                  </svg>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <h5 class="text-xs sm:text-sm font-bold text-slate-100 group-hover:text-purple-400 transition-colors truncate">Aset & Investasi</h5>
+                  <p class="text-[11px] sm:text-xs text-slate-400 truncate">Nilai kekayaan</p>
+                </div>
+              </button>
+            </div>
           </div>
-          <div class="filters-inline gap-3">
-            <button class="icon-btn icon-eye" id="walletVisibilityToggle" title="Tampilkan atau sembunyikan nominal" aria-label="Toggle nominal"></button>
-            <button class="primary-btn" data-open-modal="walletModal">Tambah Wallet</button>
+
+          <div class="grid-two grid gap-5 xl:grid-cols-2">
+            <article class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Grafik</p>
+                  <h4>Seluruh Transaksi</h4>
+                </div>
+              </div>
+              <div id="transactionChart" class="chart-card"></div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Analitik</p>
+                  <h4>Kategori</h4>
+                </div>
+              </div>
+              <div id="categoryChart" class="chart-card"></div>
+            </article>
           </div>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <p class="eyebrow">Insight</p>
+                <h4>Ringkasan Cerdas</h4>
+              </div>
+            </div>
+            <div class="stats-grid insight-grid grid gap-4 md:grid-cols-2 2xl:grid-cols-4" id="dashboardInsights"></div>
+          </article>
+        </section>
+
+        <section class="view space-y-6" id="walletView">
+          <div class="section-heading flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p class="eyebrow">Wallet</p>
+              <h3>Daftar Wallet Aktif</h3>
+            </div>
+            <div class="filters-inline gap-3">
+              <button class="icon-btn icon-eye" id="walletVisibilityToggle" title="Tampilkan atau sembunyikan nominal" aria-label="Toggle nominal"></button>
+              <button class="primary-btn" data-open-modal="walletModal">Tambah Wallet</button>
+            </div>
+          </div>
+          <div class="wallet-grid grid gap-5 md:grid-cols-2 xl:grid-cols-3" id="walletGrid"></div>
+        </section>
+
+        <section class="view space-y-6" id="assetsView">
+          <div class="section-heading flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p class="eyebrow">Portfolio</p>
+              <h3>Pantau Nilai Aset</h3>
+            </div>
+            <div class="filters-inline gap-3">
+              <select id="assetTypeFilter">
+                <option value="all">Semua Jenis</option>
+                <option value="cash_equivalent">Kas & Setara Kas</option>
+                <option value="gold">Emas</option>
+                <option value="investment">Investasi</option>
+                <option value="property">Properti</option>
+                <option value="vehicle">Kendaraan</option>
+                <option value="business">Bisnis</option>
+                <option value="gadget">Gadget</option>
+                <option value="other">Lainnya</option>
+              </select>
+              <button class="primary-btn" data-open-modal="assetModal">Tambah Aset</button>
+            </div>
+          </div>
+
+          <div class="stats-grid grid gap-4 md:grid-cols-3" id="assetSummary"></div>
+
+          <div class="grid-two grid gap-5 xl:grid-cols-2">
+            <article class="panel rounded-[30px] border border-white/10 bg-slate-900/60 p-6 shadow-2xl backdrop-blur-xl">
+              <div class="panel-head mb-4">
+                <div>
+                  <p class="eyebrow">Komposisi</p>
+                  <h4>Sebaran Portfolio</h4>
+                </div>
+              </div>
+              <div id="assetCompositionChart" class="chart-card"></div>
+            </article>
+            <article class="panel rounded-[30px] border border-white/10 bg-slate-900/60 p-6 shadow-2xl backdrop-blur-xl">
+              <div class="panel-head mb-4">
+                <div>
+                  <p class="eyebrow">Histori</p>
+                  <h4>Tren Nilai Aset</h4>
+                </div>
+              </div>
+              <div id="assetHistoryChart" class="chart-card"></div>
+            </article>
+          </div>
+
+          <article class="panel rounded-[30px] border border-white/10 bg-slate-900/60 p-6 shadow-2xl backdrop-blur-xl">
+            <div class="panel-head mb-4">
+              <div>
+                <p class="eyebrow">Daftar Aset</p>
+                <h4>Komposisi Kekayaan Pribadi</h4>
+              </div>
+            </div>
+            <div class="grid gap-4" id="assetList"></div>
+          </article>
+        </section>
+
+        <section class="view space-y-6" id="transactionsView">
+          <div class="section-heading flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p class="eyebrow">Riwayat</p>
+              <h3>Transaksi</h3>
+            </div>
+            <button class="primary-btn" data-open-modal="transactionModal">Tambah Transaksi</button>
+          </div>
+
+          <div class="panel">
+            <div class="transaction-toolbar grid gap-4">
+              <label class="transaction-search">
+                <span class="search-icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-400">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                  </svg>
+                </span>
+                <input type="search" id="transactionSearch" placeholder="Cari catatan, kategori, atau wallet..." />
+              </label>
+              <div class="transaction-filter-row">
+                <select id="transactionDateMode">
+                  <option value="all">Semua Waktu</option>
+                  <option value="month">Bulan</option>
+                  <option value="custom">Custom</option>
+                </select>
+                <input type="month" id="transactionMonth" class="hidden" />
+                <input type="date" id="transactionStart" class="hidden" />
+                <input type="date" id="transactionEnd" class="hidden" />
+                <select id="transactionWalletFilter">
+                  <option value="all">Semua Dompet</option>
+                </select>
+                <select id="transactionTypeFilter">
+                  <option value="all">Semua Tipe</option>
+                  <option value="income">Pemasukan</option>
+                  <option value="expense">Pengeluaran</option>
+                  <option value="transfer">Transfer</option>
+                </select>
+                <select id="transactionCategoryFilter"></select>
+              </div>
+            </div>
+
+            <div class="transaction-feed grid gap-5" id="transactionsTableBody"></div>
+          </div>
+        </section>
+
+        <section class="view space-y-6" id="categoriesView">
+          <div class="section-heading flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p class="eyebrow">Kategori</p>
+              <h3>Kelola Kategori</h3>
+            </div>
+            <button class="primary-btn" data-open-modal="categoryModal">Tambah Kategori</button>
+          </div>
+
+          <div class="grid-two grid gap-5 xl:grid-cols-2">
+            <article class="panel rounded-[28px] border border-white/10 bg-slate-900/60 p-6 shadow-2xl backdrop-blur-xl">
+              <div class="panel-head mb-4">
+                <div>
+                  <p class="eyebrow">Grup</p>
+                  <h4 class="text-xl font-bold text-slate-100">Pemasukan</h4>
+                </div>
+              </div>
+              <div id="incomeCategoryList" class="grid gap-3"></div>
+            </article>
+            <article class="panel rounded-[28px] border border-white/10 bg-slate-900/60 p-6 shadow-2xl backdrop-blur-xl">
+              <div class="panel-head mb-4">
+                <div>
+                  <p class="eyebrow">Grup</p>
+                  <h4 class="text-xl font-bold text-slate-100">Pengeluaran</h4>
+                </div>
+              </div>
+              <div id="expenseCategoryList" class="grid gap-3"></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="view space-y-6" id="budgetingView">
+          <div class="section-heading flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p class="eyebrow">Budgeting</p>
+              <h3>Kontrol Anggaran Bulanan</h3>
+            </div>
+            <div class="filters-inline gap-3">
+              <input type="month" id="budgetMonthFilter" />
+              <button class="ghost-btn" data-open-modal="savingsTargetModal">Target Tabungan</button>
+              <button class="primary-btn" data-open-modal="budgetModal">Tambah Budget</button>
+            </div>
+          </div>
+
+          <div class="stats-grid grid gap-4 md:grid-cols-3" id="budgetSummary"></div>
+
+          <div class="grid-two grid gap-5 xl:grid-cols-2" id="budgetInsights"></div>
+
+          <article class="panel rounded-[30px] border border-white/10 bg-slate-900/60 p-6 shadow-2xl backdrop-blur-xl">
+            <div class="panel-head mb-4">
+              <div>
+                <p class="eyebrow">Progress</p>
+                <h4>Penggunaan per Kategori</h4>
+              </div>
+            </div>
+            <div class="grid gap-4" id="budgetList"></div>
+          </article>
+        </section>
+
+        <section class="view space-y-6" id="debtsView">
+          <div class="section-heading flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p class="eyebrow">Hutang Piutang</p>
+              <h3>Catatan Pembayaran</h3>
+            </div>
+            <div class="filters-inline debt-actions">
+              <button class="primary-btn" data-open-modal="debtModal">Tambah Data</button>
+            </div>
+          </div>
+          <div class="debt-filter-bar" id="debtFilterBar">
+            <button class="debt-filter-chip active" type="button" data-debt-filter="all">Semua</button>
+            <button class="debt-filter-chip" type="button" data-debt-filter="debt">Hutang</button>
+            <button class="debt-filter-chip" type="button" data-debt-filter="receivable">Piutang</button>
+            <button class="debt-filter-chip" type="button" data-debt-filter="paid">Lunas</button>
+            <button class="debt-filter-chip" type="button" data-debt-filter="unpaid">Belum Lunas</button>
+            <button class="debt-filter-chip" type="button" data-debt-filter="overdue">Lewat Jatuh Tempo</button>
+          </div>
+          <div class="debt-summary-grid grid gap-5 md:grid-cols-2" id="debtSummary"></div>
+          <div id="debtList" class="debt-list grid gap-5"></div>
+        </section>
+
+        <section class="view space-y-6" id="profileView">
+          <div class="section-heading flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p class="eyebrow">Pengaturan & Akun</p>
+              <h3>Profil Saya</h3>
+            </div>
+            <div class="filters-inline">
+              <button class="danger-btn logout-btn inline-flex items-center gap-2 rounded-2xl px-5 py-2.5 text-sm font-semibold" id="logoutButton" type="button">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                <span>Keluar (Logout)</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="profile-overview-card rounded-[28px] border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+            <div class="flex flex-col sm:flex-row items-center gap-5">
+              <div class="user-avatar text-xl font-black w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-tr from-cyan-500 to-teal-300 text-slate-950 shadow-lg" id="userAvatar">DK</div>
+              <div class="text-center sm:text-left flex-1 min-w-0">
+                <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-1">
+                  <h4 class="text-2xl font-extrabold text-slate-50" id="userDisplayName">Pengguna</h4>
+                  <span class="rounded-full bg-cyan-500/10 px-3 py-1 text-xs font-bold text-cyan-400 border border-cyan-500/20">Akun Aktif</span>
+                </div>
+                <p class="text-sm text-slate-300" id="userEmailDisplay">user@example.com</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel rounded-[30px] border border-white/10 bg-slate-950/70 p-6 backdrop-blur-xl space-y-6">
+            <div class="tab-group grid gap-3 rounded-[22px] border border-white/10 bg-white/5 p-1.5 md:grid-cols-3">
+              <button class="tab-btn active inline-flex items-center justify-center rounded-[18px] px-4 py-3 text-sm font-semibold text-slate-50 transition" type="button" data-profile-tab="profile">Profil</button>
+              <button class="tab-btn inline-flex items-center justify-center rounded-[18px] px-4 py-3 text-sm font-semibold text-slate-300 transition" type="button" data-profile-tab="password">Password</button>
+              <button class="tab-btn inline-flex items-center justify-center rounded-[18px] px-4 py-3 text-sm font-semibold text-slate-300 transition" type="button" data-profile-tab="security">Data & Security</button>
+            </div>
+
+            <form id="profileForm" class="form-grid profile-panel grid gap-4">
+              <label class="grid gap-2 text-sm font-semibold text-slate-200">
+                <span>Nama</span>
+                <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" id="profileName" required />
+              </label>
+              <label class="grid gap-2 text-sm font-semibold text-slate-200">
+                <span>Email</span>
+                <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="email" id="profileEmail" required />
+              </label>
+              <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Simpan Profil</button>
+            </form>
+
+            <form id="passwordForm" class="form-grid profile-panel hidden gap-4">
+              <label class="grid gap-2 text-sm font-semibold text-slate-200">
+                <span>Password Lama</span>
+                <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="password" id="currentPassword" required />
+              </label>
+              <label class="grid gap-2 text-sm font-semibold text-slate-200">
+                <span>Password Baru</span>
+                <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="password" id="newPassword" minlength="6" required />
+              </label>
+              <label class="grid gap-2 text-sm font-semibold text-slate-200">
+                <span>Konfirmasi Password Baru</span>
+                <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="password" id="confirmPassword" minlength="6" required />
+              </label>
+              <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Ganti Password</button>
+            </form>
+
+            <div id="securityPanel" class="form-grid profile-panel hidden gap-5">
+              <div class="security-actions flex flex-wrap gap-3">
+                <button class="primary-btn" id="exportDataButton" type="button">Export JSON</button>
+                <button class="ghost-btn" id="exportExcelButton" type="button">Export Excel</button>
+                <button class="ghost-btn" id="exportPdfButton" type="button">Export PDF</button>
+                <input type="file" id="importDataInput" accept="application/json" class="hidden" />
+                <button class="ghost-btn" id="importDataButton" type="button">Import Data</button>
+                <button class="ghost-btn" id="backupNowButton" type="button">Backup Sekarang</button>
+              </div>
+
+              <div class="security-card rounded-[26px] border border-white/10 bg-white/5 p-5">
+                <div class="panel-head mb-4">
+                  <h4 class="text-lg font-bold text-slate-100">Akses Perangkat Lain</h4>
+                </div>
+                <div id="systemInfoPanel" class="grid gap-3"></div>
+              </div>
+
+              <div class="security-card rounded-[26px] border border-white/10 bg-white/5 p-5">
+                <div class="panel-head mb-4">
+                  <h4 class="text-lg font-bold text-slate-100">Audit Aktivitas</h4>
+                </div>
+                <div id="securityActivityList" class="grid gap-3"></div>
+              </div>
+
+              <form id="deleteAccountForm" class="form-grid danger-zone grid gap-4 rounded-[26px] border border-rose-500/20 bg-rose-500/10 p-5">
+                <p class="eyebrow">Danger Zone</p>
+                <label class="grid gap-2 text-sm font-semibold text-slate-200">
+                  <span>Password untuk hapus akun</span>
+                  <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-rose-400/60 focus:bg-white/10" type="password" id="deleteAccountPassword" required />
+                </label>
+                <button class="danger-btn inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Hapus Akun Permanen</button>
+              </form>
+            </div>
+
+            <p id="profileStatus" class="auth-status hidden mt-5 rounded-2xl px-4 py-3 text-sm font-semibold"></p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal-backdrop hidden" id="modalBackdrop"></div>
+
+    <div class="modal hidden" id="confirmModal">
+      <div class="modal-card w-full max-w-lg rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
+        <div class="modal-head mb-4">
+          <div class="grid gap-2">
+            <p class="text-xs font-semibold uppercase tracking-[0.32em] text-slate-400">Konfirmasi</p>
+            <h3 id="confirmModalTitle" class="text-2xl font-bold text-slate-100">Hapus data?</h3>
+          </div>
+          <button class="icon-btn modal-close" data-close-modal="confirmModal">X</button>
         </div>
-        <div class="wallet-grid grid gap-5 md:grid-cols-2 xl:grid-cols-3" id="walletGrid"></div>
-      </section>
+        <p id="confirmModalMessage" class="text-sm leading-7 text-slate-300">Aksi ini tidak bisa dibatalkan.</p>
+        <div class="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+          <button id="confirmModalCancel" class="ghost-btn inline-flex items-center justify-center rounded-2xl px-5 py-3 font-semibold" type="button">Batal</button>
+          <button id="confirmModalConfirm" class="danger-btn inline-flex items-center justify-center rounded-2xl px-5 py-3 font-semibold" type="button">Hapus</button>
+        </div>
+      </div>
+    </div>
 
-      <section class="view space-y-6" id="assetsView">
-        <div class="section-heading flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p class="eyebrow">Portfolio</p>
-            <h3>Pantau Nilai Aset</h3>
-          </div>
-          <div class="filters-inline gap-3">
-            <select id="assetTypeFilter">
-              <option value="all">Semua Jenis</option>
+    <div class="modal hidden" id="walletModal">
+      <div class="modal-card w-full max-w-xl rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
+        <div class="modal-head mb-5">
+          <h3 id="walletModalTitle" class="text-2xl font-bold text-slate-100">Tambah Wallet</h3>
+          <button class="icon-btn modal-close" data-close-modal="walletModal">X</button>
+        </div>
+        <form id="walletForm" class="form-grid grid gap-4">
+          <input type="hidden" id="walletId" />
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Nama Wallet</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" id="walletName" required />
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Balance Awal (Opsional)</span>
+            <input
+              class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10"
+              type="text"
+              inputmode="decimal"
+              id="walletBalance"
+              placeholder="0"
+            />
+          </label>
+          <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Simpan Wallet</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal hidden" id="assetModal">
+      <div class="modal-card w-full max-w-xl rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
+        <div class="modal-head mb-5">
+          <h3 id="assetModalTitle" class="text-2xl font-bold text-slate-100">Tambah Aset</h3>
+          <button class="icon-btn modal-close" data-close-modal="assetModal">X</button>
+        </div>
+        <form id="assetForm" class="form-grid grid gap-4">
+          <input type="hidden" id="assetId" />
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Dompet</span>
+            <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="assetWalletId" required></select>
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Nama Aset</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" id="assetName" required />
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Jenis Aset</span>
+            <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="assetType" required>
               <option value="cash_equivalent">Kas & Setara Kas</option>
               <option value="gold">Emas</option>
               <option value="investment">Investasi</option>
@@ -356,709 +743,377 @@
               <option value="gadget">Gadget</option>
               <option value="other">Lainnya</option>
             </select>
-            <button class="primary-btn" data-open-modal="assetModal">Tambah Aset</button>
-          </div>
-        </div>
-
-        <div class="stats-grid grid gap-4 md:grid-cols-3" id="assetSummary"></div>
-
-        <div class="grid-two grid gap-5 xl:grid-cols-2">
-          <article class="panel rounded-[30px] border border-white/10 bg-slate-900/60 p-6 shadow-2xl backdrop-blur-xl">
-            <div class="panel-head mb-4">
-              <div>
-                <p class="eyebrow">Komposisi</p>
-                <h4>Sebaran Portfolio</h4>
-              </div>
-            </div>
-            <div id="assetCompositionChart" class="chart-card"></div>
-          </article>
-          <article class="panel rounded-[30px] border border-white/10 bg-slate-900/60 p-6 shadow-2xl backdrop-blur-xl">
-            <div class="panel-head mb-4">
-              <div>
-                <p class="eyebrow">Histori</p>
-                <h4>Tren Nilai Aset</h4>
-              </div>
-            </div>
-            <div id="assetHistoryChart" class="chart-card"></div>
-          </article>
-        </div>
-
-        <article class="panel rounded-[30px] border border-white/10 bg-slate-900/60 p-6 shadow-2xl backdrop-blur-xl">
-          <div class="panel-head mb-4">
-            <div>
-              <p class="eyebrow">Daftar Aset</p>
-              <h4>Komposisi Kekayaan Pribadi</h4>
-            </div>
-          </div>
-          <div class="grid gap-4" id="assetList"></div>
-        </article>
-      </section>
-
-      <section class="view space-y-6" id="transactionsView">
-        <div class="section-heading flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p class="eyebrow">Riwayat</p>
-            <h3>Transaksi</h3>
-          </div>
-          <button class="primary-btn" data-open-modal="transactionModal">Tambah Transaksi</button>
-        </div>
-
-        <div class="panel">
-          <div class="transaction-toolbar grid gap-4">
-            <label class="transaction-search">
-              <span class="search-icon" aria-hidden="true">âŒ•</span>
-              <input type="search" id="transactionSearch" placeholder="Cari catatan, kategori, atau wallet...">
-            </label>
-            <div class="transaction-filter-row">
-              <select id="transactionDateMode">
-                <option value="all">Semua Waktu</option>
-                <option value="month">Bulan</option>
-                <option value="custom">Custom</option>
-              </select>
-              <input type="month" id="transactionMonth" class="hidden">
-              <input type="date" id="transactionStart" class="hidden">
-              <input type="date" id="transactionEnd" class="hidden">
-              <select id="transactionWalletFilter">
-                <option value="all">Semua Dompet</option>
-              </select>
-              <select id="transactionTypeFilter">
-                <option value="all">Semua Tipe</option>
-                <option value="income">Pemasukan</option>
-                <option value="expense">Pengeluaran</option>
-                <option value="transfer">Transfer</option>
-              </select>
-              <select id="transactionCategoryFilter"></select>
-            </div>
-          </div>
-
-          <div class="transaction-feed grid gap-5" id="transactionsTableBody">
-          </div>
-        </div>
-      </section>
-
-      <section class="view space-y-6" id="categoriesView">
-        <div class="section-heading flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p class="eyebrow">Kategori</p>
-            <h3>Kelola Kategori</h3>
-          </div>
-          <button class="primary-btn" data-open-modal="categoryModal">Tambah Kategori</button>
-        </div>
-
-        <div class="grid-two grid gap-5 xl:grid-cols-2">
-          <article class="panel rounded-[28px] border border-white/10 bg-slate-900/60 p-6 shadow-2xl backdrop-blur-xl">
-            <div class="panel-head mb-4">
-              <div>
-                <p class="eyebrow">Grup</p>
-                <h4 class="text-xl font-bold text-slate-100">Pemasukan</h4>
-              </div>
-            </div>
-            <div id="incomeCategoryList" class="grid gap-3"></div>
-          </article>
-          <article class="panel rounded-[28px] border border-white/10 bg-slate-900/60 p-6 shadow-2xl backdrop-blur-xl">
-            <div class="panel-head mb-4">
-              <div>
-                <p class="eyebrow">Grup</p>
-                <h4 class="text-xl font-bold text-slate-100">Pengeluaran</h4>
-              </div>
-            </div>
-            <div id="expenseCategoryList" class="grid gap-3"></div>
-          </article>
-        </div>
-      </section>
-
-      <section class="view space-y-6" id="budgetingView">
-        <div class="section-heading flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p class="eyebrow">Budgeting</p>
-            <h3>Kontrol Anggaran Bulanan</h3>
-          </div>
-          <div class="filters-inline gap-3">
-            <input type="month" id="budgetMonthFilter">
-            <button class="ghost-btn" data-open-modal="savingsTargetModal">Target Tabungan</button>
-            <button class="primary-btn" data-open-modal="budgetModal">Tambah Budget</button>
-          </div>
-        </div>
-
-        <div class="stats-grid grid gap-4 md:grid-cols-3" id="budgetSummary"></div>
-
-        <div class="grid-two grid gap-5 xl:grid-cols-2" id="budgetInsights"></div>
-
-        <article class="panel rounded-[30px] border border-white/10 bg-slate-900/60 p-6 shadow-2xl backdrop-blur-xl">
-          <div class="panel-head mb-4">
-            <div>
-              <p class="eyebrow">Progress</p>
-              <h4>Penggunaan per Kategori</h4>
-            </div>
-          </div>
-          <div class="grid gap-4" id="budgetList"></div>
-        </article>
-      </section>
-
-      <section class="view space-y-6" id="debtsView">
-        <div class="section-heading flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p class="eyebrow">Hutang Piutang</p>
-            <h3>Catatan Pembayaran</h3>
-          </div>
-          <div class="filters-inline debt-actions">
-            <button class="primary-btn" data-open-modal="debtModal">Tambah Data</button>
-          </div>
-        </div>
-        <div class="debt-filter-bar" id="debtFilterBar">
-          <button class="debt-filter-chip active" type="button" data-debt-filter="all">Semua</button>
-          <button class="debt-filter-chip" type="button" data-debt-filter="debt">Hutang</button>
-          <button class="debt-filter-chip" type="button" data-debt-filter="receivable">Piutang</button>
-          <button class="debt-filter-chip" type="button" data-debt-filter="paid">Lunas</button>
-          <button class="debt-filter-chip" type="button" data-debt-filter="unpaid">Belum Lunas</button>
-          <button class="debt-filter-chip" type="button" data-debt-filter="overdue">Lewat Jatuh Tempo</button>
-        </div>
-        <div class="debt-summary-grid grid gap-5 md:grid-cols-2" id="debtSummary"></div>
-        <div id="debtList" class="debt-list grid gap-5"></div>
-      </section>
-
-      <section class="view space-y-6" id="profileView">
-        <div class="section-heading flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p class="eyebrow">Pengaturan & Akun</p>
-            <h3>Profil Saya</h3>
-          </div>
-          <div class="filters-inline">
-            <button class="danger-btn logout-btn inline-flex items-center gap-2 rounded-2xl px-5 py-2.5 text-sm font-semibold" id="logoutButton" type="button">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                <polyline points="16 17 21 12 16 7"></polyline>
-                <line x1="21" y1="12" x2="9" y2="12"></line>
-              </svg>
-              <span>Keluar (Logout)</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="profile-overview-card rounded-[28px] border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
-          <div class="flex flex-col sm:flex-row items-center gap-5">
-            <div class="user-avatar text-xl font-black w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-tr from-cyan-500 to-teal-300 text-slate-950 shadow-lg" id="userAvatar">DK</div>
-            <div class="text-center sm:text-left flex-1 min-w-0">
-              <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-1">
-                <h4 class="text-2xl font-extrabold text-slate-50" id="userDisplayName">Pengguna</h4>
-                <span class="rounded-full bg-cyan-500/10 px-3 py-1 text-xs font-bold text-cyan-400 border border-cyan-500/20">Akun Aktif</span>
-              </div>
-              <p class="text-sm text-slate-300" id="userEmailDisplay">user@example.com</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="panel rounded-[30px] border border-white/10 bg-slate-950/70 p-6 backdrop-blur-xl space-y-6">
-          <div class="tab-group grid gap-3 rounded-[22px] border border-white/10 bg-white/5 p-1.5 md:grid-cols-3">
-            <button class="tab-btn active inline-flex items-center justify-center rounded-[18px] px-4 py-3 text-sm font-semibold text-slate-50 transition" type="button" data-profile-tab="profile">Profil</button>
-            <button class="tab-btn inline-flex items-center justify-center rounded-[18px] px-4 py-3 text-sm font-semibold text-slate-300 transition" type="button" data-profile-tab="password">Password</button>
-            <button class="tab-btn inline-flex items-center justify-center rounded-[18px] px-4 py-3 text-sm font-semibold text-slate-300 transition" type="button" data-profile-tab="security">Data & Security</button>
-          </div>
-
-          <form id="profileForm" class="form-grid profile-panel grid gap-4">
-            <label class="grid gap-2 text-sm font-semibold text-slate-200">
-              <span>Nama</span>
-              <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" id="profileName" required>
-            </label>
-            <label class="grid gap-2 text-sm font-semibold text-slate-200">
-              <span>Email</span>
-              <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="email" id="profileEmail" required>
-            </label>
-            <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Simpan Profil</button>
-          </form>
-
-          <form id="passwordForm" class="form-grid profile-panel hidden gap-4">
-            <label class="grid gap-2 text-sm font-semibold text-slate-200">
-              <span>Password Lama</span>
-              <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="password" id="currentPassword" required>
-            </label>
-            <label class="grid gap-2 text-sm font-semibold text-slate-200">
-              <span>Password Baru</span>
-              <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="password" id="newPassword" minlength="6" required>
-            </label>
-            <label class="grid gap-2 text-sm font-semibold text-slate-200">
-              <span>Konfirmasi Password Baru</span>
-              <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="password" id="confirmPassword" minlength="6" required>
-            </label>
-            <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Ganti Password</button>
-          </form>
-
-          <div id="securityPanel" class="form-grid profile-panel hidden gap-5">
-            <div class="security-actions flex flex-wrap gap-3">
-              <button class="primary-btn" id="exportDataButton" type="button">Export JSON</button>
-              <button class="ghost-btn" id="exportExcelButton" type="button">Export Excel</button>
-              <button class="ghost-btn" id="exportPdfButton" type="button">Export PDF</button>
-              <input type="file" id="importDataInput" accept="application/json" class="hidden">
-              <button class="ghost-btn" id="importDataButton" type="button">Import Data</button>
-              <button class="ghost-btn" id="backupNowButton" type="button">Backup Sekarang</button>
-            </div>
-
-            <div class="security-card rounded-[26px] border border-white/10 bg-white/5 p-5">
-              <div class="panel-head mb-4">
-                <h4 class="text-lg font-bold text-slate-100">Akses Perangkat Lain</h4>
-              </div>
-              <div id="systemInfoPanel" class="grid gap-3"></div>
-            </div>
-
-            <div class="security-card rounded-[26px] border border-white/10 bg-white/5 p-5">
-              <div class="panel-head mb-4">
-                <h4 class="text-lg font-bold text-slate-100">Audit Aktivitas</h4>
-              </div>
-              <div id="securityActivityList" class="grid gap-3"></div>
-            </div>
-
-            <form id="deleteAccountForm" class="form-grid danger-zone grid gap-4 rounded-[26px] border border-rose-500/20 bg-rose-500/10 p-5">
-              <p class="eyebrow">Danger Zone</p>
-              <label class="grid gap-2 text-sm font-semibold text-slate-200">
-                <span>Password untuk hapus akun</span>
-                <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-rose-400/60 focus:bg-white/10" type="password" id="deleteAccountPassword" required>
-              </label>
-              <button class="danger-btn inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Hapus Akun Permanen</button>
-            </form>
-          </div>
-
-          <p id="profileStatus" class="auth-status hidden mt-5 rounded-2xl px-4 py-3 text-sm font-semibold"></p>
-        </div>
-      </section>
-    </main>
-  </div>
-
-  <div class="modal-backdrop hidden" id="modalBackdrop"></div>
-
-  <div class="modal hidden" id="confirmModal">
-    <div class="modal-card w-full max-w-lg rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
-      <div class="modal-head mb-4">
-        <div class="grid gap-2">
-          <p class="text-xs font-semibold uppercase tracking-[0.32em] text-slate-400">Konfirmasi</p>
-          <h3 id="confirmModalTitle" class="text-2xl font-bold text-slate-100">Hapus data?</h3>
-        </div>
-        <button class="icon-btn modal-close" data-close-modal="confirmModal">X</button>
-      </div>
-      <p id="confirmModalMessage" class="text-sm leading-7 text-slate-300">Aksi ini tidak bisa dibatalkan.</p>
-      <div class="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-        <button id="confirmModalCancel" class="ghost-btn inline-flex items-center justify-center rounded-2xl px-5 py-3 font-semibold" type="button">Batal</button>
-        <button id="confirmModalConfirm" class="danger-btn inline-flex items-center justify-center rounded-2xl px-5 py-3 font-semibold" type="button">Hapus</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal hidden" id="walletModal">
-    <div class="modal-card w-full max-w-xl rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
-      <div class="modal-head mb-5">
-        <h3 id="walletModalTitle" class="text-2xl font-bold text-slate-100">Tambah Wallet</h3>
-        <button class="icon-btn modal-close" data-close-modal="walletModal">X</button>
-      </div>
-      <form id="walletForm" class="form-grid grid gap-4">
-        <input type="hidden" id="walletId">
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Nama Wallet</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" id="walletName" required>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Balance Awal (Opsional)</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" inputmode="decimal" id="walletBalance" placeholder="0">
-        </label>
-        <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Simpan Wallet</button>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal hidden" id="assetModal">
-    <div class="modal-card w-full max-w-xl rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
-      <div class="modal-head mb-5">
-        <h3 id="assetModalTitle" class="text-2xl font-bold text-slate-100">Tambah Aset</h3>
-        <button class="icon-btn modal-close" data-close-modal="assetModal">X</button>
-      </div>
-      <form id="assetForm" class="form-grid grid gap-4">
-        <input type="hidden" id="assetId">
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Dompet</span>
-          <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="assetWalletId" required></select>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Nama Aset</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" id="assetName" required>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Jenis Aset</span>
-          <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="assetType" required>
-            <option value="cash_equivalent">Kas & Setara Kas</option>
-            <option value="gold">Emas</option>
-            <option value="investment">Investasi</option>
-            <option value="property">Properti</option>
-            <option value="vehicle">Kendaraan</option>
-            <option value="business">Bisnis</option>
-            <option value="gadget">Gadget</option>
-            <option value="other">Lainnya</option>
-          </select>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Akun / Platform</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" id="assetAccountName" placeholder="Contoh: BCA, Bibit, Pegadaian">
-        </label>
-        <div class="grid gap-4 md:grid-cols-2">
-          <label class="grid gap-2 text-sm font-semibold text-slate-200">
-            <span>Nilai Saat Ini</span>
-            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" inputmode="decimal" id="assetCurrentValue" required>
           </label>
           <label class="grid gap-2 text-sm font-semibold text-slate-200">
-            <span>Nilai Beli (Opsional)</span>
-            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" inputmode="decimal" id="assetPurchaseValue">
+            <span>Akun / Platform</span>
+            <input
+              class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10"
+              type="text"
+              id="assetAccountName"
+              placeholder="Contoh: BCA, Bibit, Pegadaian"
+            />
           </label>
-        </div>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Tanggal Perolehan</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="date" id="assetAcquiredDate">
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Catatan</span>
-          <textarea class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="assetNote" rows="3"></textarea>
-        </label>
-        <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Simpan Aset</button>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal hidden" id="categoryModal">
-    <div class="modal-card w-full max-w-xl rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
-      <div class="modal-head mb-5">
-        <h3 id="categoryModalTitle" class="text-2xl font-bold text-slate-100">Tambah Kategori</h3>
-        <button class="icon-btn modal-close" data-close-modal="categoryModal">X</button>
-      </div>
-      <form id="categoryForm" class="form-grid grid gap-4">
-        <input type="hidden" id="categoryId">
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Nama Kategori</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" id="categoryName" required>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Jenis</span>
-          <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="categoryType" required>
-            <option value="income">Pemasukan</option>
-            <option value="expense">Pengeluaran</option>
-          </select>
-        </label>
-        <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Simpan Kategori</button>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal hidden" id="budgetModal">
-    <div class="modal-card w-full max-w-xl rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
-      <div class="modal-head mb-5">
-        <h3 id="budgetModalTitle" class="text-2xl font-bold text-slate-100">Tambah Budget</h3>
-        <button class="icon-btn modal-close" data-close-modal="budgetModal">X</button>
-      </div>
-      <form id="budgetForm" class="form-grid grid gap-4">
-        <input type="hidden" id="budgetId">
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Bulan</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="month" id="budgetMonth" required>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Kategori Pengeluaran</span>
-          <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="budgetCategory" required></select>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Nominal Budget</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" inputmode="decimal" id="budgetAmount" required>
-        </label>
-        <label class="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold text-slate-200">
-          <input type="checkbox" id="budgetCarryOver" checked>
-          <span>Bawa sisa budget ke bulan berikutnya</span>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Catatan (Opsional)</span>
-          <textarea class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="budgetNote" rows="3"></textarea>
-        </label>
-        <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Simpan Budget</button>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal hidden" id="savingsTargetModal">
-    <div class="modal-card w-full max-w-xl rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
-      <div class="modal-head mb-5">
-        <h3 id="savingsTargetModalTitle" class="text-2xl font-bold text-slate-100">Target Tabungan</h3>
-        <button class="icon-btn modal-close" data-close-modal="savingsTargetModal">X</button>
-      </div>
-      <form id="savingsTargetForm" class="form-grid grid gap-4">
-        <input type="hidden" id="savingsTargetId">
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Bulan</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="month" id="savingsTargetMonth" required>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Nominal Target</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" inputmode="decimal" id="savingsTargetAmount" required>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Catatan (Opsional)</span>
-          <textarea class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="savingsTargetNote" rows="3"></textarea>
-        </label>
-        <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Simpan Target</button>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal hidden modal-wide" id="transactionModal">
-    <div class="modal-card w-full max-w-4xl rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
-      <div class="modal-head mb-5">
-        <h3 id="transactionModalTitle" class="text-2xl font-bold text-slate-100">Tambah Transaksi</h3>
-        <button class="icon-btn modal-close" data-close-modal="transactionModal">X</button>
-      </div>
-      <div class="tab-group mb-5 grid grid-cols-2 gap-3 rounded-[22px] border border-white/10 bg-white/5 p-1.5">
-        <button class="tab-btn active inline-flex items-center justify-center rounded-[18px] px-4 py-3 text-sm font-semibold text-slate-50 transition" data-transaction-tab="flow">Pemasukan / Pengeluaran</button>
-        <button class="tab-btn inline-flex items-center justify-center rounded-[18px] px-4 py-3 text-sm font-semibold text-slate-300 transition" data-transaction-tab="transfer">Transfer</button>
-      </div>
-
-      <form id="flowTransactionForm" class="form-grid tab-panel active grid gap-4 md:grid-cols-2">
-        <input type="hidden" id="flowTransactionId">
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Jenis</span>
-          <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="flowType" required>
-            <option value="income">Pemasukan</option>
-            <option value="expense">Pengeluaran</option>
-          </select>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Tanggal</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="date" id="flowDate">
-        </label>
-        <label class="amount-field grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Jumlah</span>
-          <div class="input-with-button">
-            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" inputmode="decimal" id="flowAmount" required>
-            <button type="button" class="icon-btn" id="openCalculator">Calc</button>
+          <div class="grid gap-4 md:grid-cols-2">
+            <label class="grid gap-2 text-sm font-semibold text-slate-200">
+              <span>Nilai Saat Ini</span>
+              <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" inputmode="decimal" id="assetCurrentValue" required />
+            </label>
+            <label class="grid gap-2 text-sm font-semibold text-slate-200">
+              <span>Nilai Beli (Opsional)</span>
+              <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" inputmode="decimal" id="assetPurchaseValue" />
+            </label>
           </div>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Dari Wallet</span>
-          <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="flowWallet" required></select>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Pilih Kategori</span>
-          <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="flowCategory" required></select>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Deskripsi</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" id="flowDescription" required>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200 md:col-span-2">
-          <span>Catatan (Opsional)</span>
-          <textarea class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="flowNote" rows="3"></textarea>
-        </label>
-        <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold md:col-span-2" type="submit">Simpan Transaksi</button>
-      </form>
-
-      <form id="transferForm" class="form-grid tab-panel hidden gap-4 md:grid-cols-2">
-        <input type="hidden" id="transferId">
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Dari Wallet</span>
-          <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="transferFromWallet" required></select>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Ke Wallet</span>
-          <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="transferToWallet" required></select>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Tanggal</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="date" id="transferDate">
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Nominal</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" inputmode="decimal" id="transferAmount" required>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200 md:col-span-2">
-          <span>Deskripsi</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" id="transferDescription" required>
-        </label>
-        <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold md:col-span-2" type="submit">Simpan Transfer</button>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal hidden" id="detailModal">
-    <div class="modal-card w-full max-w-2xl rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
-      <div class="modal-head mb-5">
-        <h3 class="text-2xl font-bold text-slate-100">Detail Transaksi</h3>
-        <button class="icon-btn modal-close" data-close-modal="detailModal">X</button>
-      </div>
-      <div id="transactionDetailContent" class="detail-content"></div>
-    </div>
-  </div>
-
-  <div class="modal hidden" id="calculatorModal">
-    <div class="modal-card calculator-card w-full max-w-md rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
-      <div class="modal-head mb-5">
-        <h3 class="text-2xl font-bold text-slate-100">Kalkulator</h3>
-        <button class="icon-btn modal-close" data-close-modal="calculatorModal">X</button>
-      </div>
-      <div class="calculator-display" id="calculatorDisplay">0</div>
-      <div class="calculator-grid" id="calculatorGrid"></div>
-    </div>
-  </div>
-
-  <div class="modal hidden" id="debtModal">
-    <div class="modal-card w-full max-w-xl rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
-      <div class="modal-head mb-5">
-        <h3 id="debtModalTitle" class="text-2xl font-bold text-slate-100">Tambah Hutang / Piutang</h3>
-        <button class="icon-btn modal-close" data-close-modal="debtModal">X</button>
-      </div>
-      <form id="debtForm" class="form-grid grid gap-4">
-        <input type="hidden" id="debtId">
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Jenis</span>
-          <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="debtType" required>
-            <option value="debt">Hutang</option>
-            <option value="receivable">Piutang</option>
-          </select>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Nama</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" id="debtName" required>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Nominal</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" inputmode="decimal" id="debtAmount" required>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span id="debtWalletLabel">Wallet</span>
-          <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="debtWalletId" required></select>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Tanggal Hutang</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="date" id="debtDate" required>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Keterangan</span>
-          <textarea class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="debtNote" rows="3"></textarea>
-        </label>
-        <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Simpan Data</button>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal hidden" id="paymentModal">
-    <div class="modal-card w-full max-w-xl rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
-      <div class="modal-head mb-5">
-        <h3 id="paymentModalTitle" class="text-2xl font-bold text-slate-100">Pembayaran</h3>
-        <button class="icon-btn modal-close" data-close-modal="paymentModal">X</button>
-      </div>
-      <form id="paymentForm" class="form-grid grid gap-4">
-        <input type="hidden" id="paymentMode">
-        <input type="hidden" id="paymentId">
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Pilih Data</span>
-          <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="paymentDebtId" required></select>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span id="paymentWalletLabel">Wallet</span>
-          <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="paymentWalletId" required></select>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Nominal</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" inputmode="decimal" id="paymentAmount" required>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Tanggal</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="date" id="paymentDate">
-        </label>
-        <button id="paymentSubmitButton" class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Simpan Pembayaran</button>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal hidden" id="debtDetailModal">
-    <div class="modal-card modal-wide w-full max-w-4xl rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
-      <div class="modal-head mb-5">
-        <h3 class="text-2xl font-bold text-slate-100">Detail Hutang Piutang</h3>
-        <button class="icon-btn modal-close" data-close-modal="debtDetailModal">X</button>
-      </div>
-      <div id="debtDetailContent" class="detail-content debt-detail-content"></div>
-    </div>
-  </div>
-
-  <div class="modal hidden" id="profileModal">
-    <div class="modal-card w-full max-w-4xl rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
-      <div class="modal-head mb-5">
-        <h3 class="text-2xl font-bold text-slate-100">Profil Saya</h3>
-        <button class="icon-btn modal-close" data-close-modal="profileModal">X</button>
-      </div>
-      <div class="tab-group mb-5 grid gap-3 rounded-[22px] border border-white/10 bg-white/5 p-1.5 md:grid-cols-3">
-        <button class="tab-btn active inline-flex items-center justify-center rounded-[18px] px-4 py-3 text-sm font-semibold text-slate-50 transition" type="button" data-profile-tab="profile">Profil</button>
-        <button class="tab-btn inline-flex items-center justify-center rounded-[18px] px-4 py-3 text-sm font-semibold text-slate-300 transition" type="button" data-profile-tab="password">Password</button>
-        <button class="tab-btn inline-flex items-center justify-center rounded-[18px] px-4 py-3 text-sm font-semibold text-slate-300 transition" type="button" data-profile-tab="security">Data & Security</button>
-      </div>
-
-      <form id="profileForm" class="form-grid profile-panel grid gap-4">
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Nama</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" id="profileName" required>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Email</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="email" id="profileEmail" required>
-        </label>
-        <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Simpan Profil</button>
-      </form>
-
-      <form id="passwordForm" class="form-grid profile-panel hidden gap-4">
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Password Lama</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="password" id="currentPassword" required>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Password Baru</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="password" id="newPassword" minlength="6" required>
-        </label>
-        <label class="grid gap-2 text-sm font-semibold text-slate-200">
-          <span>Konfirmasi Password Baru</span>
-          <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="password" id="confirmPassword" minlength="6" required>
-        </label>
-        <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Ganti Password</button>
-      </form>
-
-      <div id="securityPanel" class="form-grid profile-panel hidden gap-5">
-        <div class="security-actions flex flex-wrap gap-3">
-          <button class="primary-btn" id="exportDataButton" type="button">Export JSON</button>
-          <button class="ghost-btn" id="exportExcelButton" type="button">Export Excel</button>
-          <button class="ghost-btn" id="exportPdfButton" type="button">Export PDF</button>
-          <input type="file" id="importDataInput" accept="application/json" class="hidden">
-          <button class="ghost-btn" id="importDataButton" type="button">Import Data</button>
-          <button class="ghost-btn" id="backupNowButton" type="button">Backup Sekarang</button>
-        </div>
-
-        <div class="security-card rounded-[26px] border border-white/10 bg-white/5 p-5">
-          <div class="panel-head mb-4">
-            <h4 class="text-lg font-bold text-slate-100">Akses Perangkat Lain</h4>
-          </div>
-          <div id="systemInfoPanel" class="grid gap-3"></div>
-        </div>
-
-        <div class="security-card rounded-[26px] border border-white/10 bg-white/5 p-5">
-          <div class="panel-head mb-4">
-            <h4 class="text-lg font-bold text-slate-100">Audit Aktivitas</h4>
-          </div>
-          <div id="securityActivityList" class="grid gap-3"></div>
-        </div>
-
-        <form id="deleteAccountForm" class="form-grid danger-zone grid gap-4 rounded-[26px] border border-rose-500/20 bg-rose-500/10 p-5">
-          <p class="eyebrow">Danger Zone</p>
           <label class="grid gap-2 text-sm font-semibold text-slate-200">
-            <span>Password untuk hapus akun</span>
-            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-rose-400/60 focus:bg-white/10" type="password" id="deleteAccountPassword" required>
+            <span>Tanggal Perolehan</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="date" id="assetAcquiredDate" />
           </label>
-          <button class="danger-btn inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Hapus Akun Permanen</button>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Catatan</span>
+            <textarea class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="assetNote" rows="3"></textarea>
+          </label>
+          <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Simpan Aset</button>
         </form>
       </div>
-
-      <p id="profileStatus" class="auth-status hidden mt-5 rounded-2xl px-4 py-3 text-sm font-semibold"></p>
     </div>
-  </div>
 
-  <script src="./app.js"></script>
-</body>
+    <div class="modal hidden" id="categoryModal">
+      <div class="modal-card w-full max-w-xl rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
+        <div class="modal-head mb-5">
+          <h3 id="categoryModalTitle" class="text-2xl font-bold text-slate-100">Tambah Kategori</h3>
+          <button class="icon-btn modal-close" data-close-modal="categoryModal">X</button>
+        </div>
+        <form id="categoryForm" class="form-grid grid gap-4">
+          <input type="hidden" id="categoryId" />
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Nama Kategori</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" id="categoryName" required />
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Jenis</span>
+            <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="categoryType" required>
+              <option value="income">Pemasukan</option>
+              <option value="expense">Pengeluaran</option>
+            </select>
+          </label>
+          <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Simpan Kategori</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal hidden" id="budgetModal">
+      <div class="modal-card w-full max-w-xl rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
+        <div class="modal-head mb-5">
+          <h3 id="budgetModalTitle" class="text-2xl font-bold text-slate-100">Tambah Budget</h3>
+          <button class="icon-btn modal-close" data-close-modal="budgetModal">X</button>
+        </div>
+        <form id="budgetForm" class="form-grid grid gap-4">
+          <input type="hidden" id="budgetId" />
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Bulan</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="month" id="budgetMonth" required />
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Kategori Pengeluaran</span>
+            <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="budgetCategory" required></select>
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Nominal Budget</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" inputmode="decimal" id="budgetAmount" required />
+          </label>
+          <label class="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold text-slate-200">
+            <input type="checkbox" id="budgetCarryOver" checked />
+            <span>Bawa sisa budget ke bulan berikutnya</span>
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Catatan (Opsional)</span>
+            <textarea class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="budgetNote" rows="3"></textarea>
+          </label>
+          <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Simpan Budget</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal hidden" id="savingsTargetModal">
+      <div class="modal-card w-full max-w-xl rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
+        <div class="modal-head mb-5">
+          <h3 id="savingsTargetModalTitle" class="text-2xl font-bold text-slate-100">Target Tabungan</h3>
+          <button class="icon-btn modal-close" data-close-modal="savingsTargetModal">X</button>
+        </div>
+        <form id="savingsTargetForm" class="form-grid grid gap-4">
+          <input type="hidden" id="savingsTargetId" />
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Bulan</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="month" id="savingsTargetMonth" required />
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Nominal Target</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" inputmode="decimal" id="savingsTargetAmount" required />
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Catatan (Opsional)</span>
+            <textarea class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="savingsTargetNote" rows="3"></textarea>
+          </label>
+          <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Simpan Target</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal hidden modal-wide" id="transactionModal">
+      <div class="modal-card w-full max-w-4xl rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
+        <div class="modal-head mb-5">
+          <h3 id="transactionModalTitle" class="text-2xl font-bold text-slate-100">Tambah Transaksi</h3>
+          <button class="icon-btn modal-close" data-close-modal="transactionModal">X</button>
+        </div>
+        <div class="tab-group mb-5 grid grid-cols-2 gap-3 rounded-[22px] border border-white/10 bg-white/5 p-1.5">
+          <button class="tab-btn active inline-flex items-center justify-center rounded-[18px] px-4 py-3 text-sm font-semibold text-slate-50 transition" data-transaction-tab="flow">Pemasukan / Pengeluaran</button>
+          <button class="tab-btn inline-flex items-center justify-center rounded-[18px] px-4 py-3 text-sm font-semibold text-slate-300 transition" data-transaction-tab="transfer">Transfer</button>
+        </div>
+
+        <form id="flowTransactionForm" class="form-grid tab-panel active grid gap-4 md:grid-cols-2">
+          <input type="hidden" id="flowTransactionId" />
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Jenis</span>
+            <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="flowType" required>
+              <option value="income">Pemasukan</option>
+              <option value="expense">Pengeluaran</option>
+            </select>
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Tanggal</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="date" id="flowDate" />
+          </label>
+          <label class="amount-field grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Jumlah</span>
+            <div class="input-with-button">
+              <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" inputmode="decimal" id="flowAmount" required />
+              <button type="button" class="icon-btn" id="openCalculator">Calc</button>
+            </div>
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Dari Wallet</span>
+            <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="flowWallet" required></select>
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Pilih Kategori</span>
+            <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="flowCategory" required></select>
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Deskripsi</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" id="flowDescription" required />
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200 md:col-span-2">
+            <span>Catatan (Opsional)</span>
+            <textarea class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="flowNote" rows="3"></textarea>
+          </label>
+          <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold md:col-span-2" type="submit">Simpan Transaksi</button>
+        </form>
+
+        <form id="transferForm" class="form-grid tab-panel hidden gap-4 md:grid-cols-2">
+          <input type="hidden" id="transferId" />
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Dari Wallet</span>
+            <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="transferFromWallet" required></select>
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Ke Wallet</span>
+            <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="transferToWallet" required></select>
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Tanggal</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="date" id="transferDate" />
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Nominal</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" inputmode="decimal" id="transferAmount" required />
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200 md:col-span-2">
+            <span>Deskripsi</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" id="transferDescription" required />
+          </label>
+          <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold md:col-span-2" type="submit">Simpan Transfer</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal hidden" id="detailModal">
+      <div class="modal-card w-full max-w-2xl rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
+        <div class="modal-head mb-5">
+          <h3 class="text-2xl font-bold text-slate-100">Detail Transaksi</h3>
+          <button class="icon-btn modal-close" data-close-modal="detailModal">X</button>
+        </div>
+        <div id="transactionDetailContent" class="detail-content"></div>
+      </div>
+    </div>
+
+    <div class="modal hidden" id="calculatorModal">
+      <div class="modal-card calculator-card w-full max-w-md rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
+        <div class="modal-head mb-5">
+          <h3 class="text-2xl font-bold text-slate-100">Kalkulator</h3>
+          <button class="icon-btn modal-close" data-close-modal="calculatorModal">X</button>
+        </div>
+        <div class="calculator-display" id="calculatorDisplay">0</div>
+        <div class="calculator-grid" id="calculatorGrid"></div>
+      </div>
+    </div>
+
+    <div class="modal hidden" id="debtModal">
+      <div class="modal-card w-full max-w-xl rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
+        <div class="modal-head mb-5">
+          <h3 id="debtModalTitle" class="text-2xl font-bold text-slate-100">Tambah Hutang / Piutang</h3>
+          <button class="icon-btn modal-close" data-close-modal="debtModal">X</button>
+        </div>
+        <form id="debtForm" class="form-grid grid gap-4">
+          <input type="hidden" id="debtId" />
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Jenis</span>
+            <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="debtType" required>
+              <option value="debt">Hutang</option>
+              <option value="receivable">Piutang</option>
+            </select>
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Nama</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" id="debtName" required />
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Nominal</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" inputmode="decimal" id="debtAmount" required />
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span id="debtWalletLabel">Wallet</span>
+            <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="debtWalletId" required></select>
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Tanggal Hutang</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="date" id="debtDate" required />
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Keterangan</span>
+            <textarea class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="debtNote" rows="3"></textarea>
+          </label>
+          <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Simpan Data</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal hidden" id="paymentModal">
+      <div class="modal-card w-full max-w-xl rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
+        <div class="modal-head mb-5">
+          <h3 id="paymentModalTitle" class="text-2xl font-bold text-slate-100">Pembayaran</h3>
+          <button class="icon-btn modal-close" data-close-modal="paymentModal">X</button>
+        </div>
+        <form id="paymentForm" class="form-grid grid gap-4">
+          <input type="hidden" id="paymentMode" />
+          <input type="hidden" id="paymentId" />
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Pilih Data</span>
+            <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="paymentDebtId" required></select>
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span id="paymentWalletLabel">Wallet</span>
+            <select class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" id="paymentWalletId" required></select>
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Nominal</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" inputmode="decimal" id="paymentAmount" required />
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Tanggal</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="date" id="paymentDate" />
+          </label>
+          <button id="paymentSubmitButton" class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Simpan Pembayaran</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal hidden" id="debtDetailModal">
+      <div class="modal-card modal-wide w-full max-w-4xl rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
+        <div class="modal-head mb-5">
+          <h3 class="text-2xl font-bold text-slate-100">Detail Hutang Piutang</h3>
+          <button class="icon-btn modal-close" data-close-modal="debtDetailModal">X</button>
+        </div>
+        <div id="debtDetailContent" class="detail-content debt-detail-content"></div>
+      </div>
+    </div>
+
+    <div class="modal hidden" id="profileModal">
+      <div class="modal-card w-full max-w-4xl rounded-[30px] border border-white/10 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl">
+        <div class="modal-head mb-5">
+          <h3 class="text-2xl font-bold text-slate-100">Profil Saya</h3>
+          <button class="icon-btn modal-close" data-close-modal="profileModal">X</button>
+        </div>
+        <div class="tab-group mb-5 grid gap-3 rounded-[22px] border border-white/10 bg-white/5 p-1.5 md:grid-cols-3">
+          <button class="tab-btn active inline-flex items-center justify-center rounded-[18px] px-4 py-3 text-sm font-semibold text-slate-50 transition" type="button" data-profile-tab="profile">Profil</button>
+          <button class="tab-btn inline-flex items-center justify-center rounded-[18px] px-4 py-3 text-sm font-semibold text-slate-300 transition" type="button" data-profile-tab="password">Password</button>
+          <button class="tab-btn inline-flex items-center justify-center rounded-[18px] px-4 py-3 text-sm font-semibold text-slate-300 transition" type="button" data-profile-tab="security">Data & Security</button>
+        </div>
+
+        <form id="profileForm" class="form-grid profile-panel grid gap-4">
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Nama</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="text" id="profileName" required />
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Email</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="email" id="profileEmail" required />
+          </label>
+          <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Simpan Profil</button>
+        </form>
+
+        <form id="passwordForm" class="form-grid profile-panel hidden gap-4">
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Password Lama</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="password" id="currentPassword" required />
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Password Baru</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="password" id="newPassword" minlength="6" required />
+          </label>
+          <label class="grid gap-2 text-sm font-semibold text-slate-200">
+            <span>Konfirmasi Password Baru</span>
+            <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400/50 focus:bg-white/10" type="password" id="confirmPassword" minlength="6" required />
+          </label>
+          <button class="primary-btn mt-2 inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Ganti Password</button>
+        </form>
+
+        <div id="securityPanel" class="form-grid profile-panel hidden gap-5">
+          <div class="security-actions flex flex-wrap gap-3">
+            <button class="primary-btn" id="exportDataButton" type="button">Export JSON</button>
+            <button class="ghost-btn" id="exportExcelButton" type="button">Export Excel</button>
+            <button class="ghost-btn" id="exportPdfButton" type="button">Export PDF</button>
+            <input type="file" id="importDataInput" accept="application/json" class="hidden" />
+            <button class="ghost-btn" id="importDataButton" type="button">Import Data</button>
+            <button class="ghost-btn" id="backupNowButton" type="button">Backup Sekarang</button>
+          </div>
+
+          <div class="security-card rounded-[26px] border border-white/10 bg-white/5 p-5">
+            <div class="panel-head mb-4">
+              <h4 class="text-lg font-bold text-slate-100">Akses Perangkat Lain</h4>
+            </div>
+            <div id="systemInfoPanel" class="grid gap-3"></div>
+          </div>
+
+          <div class="security-card rounded-[26px] border border-white/10 bg-white/5 p-5">
+            <div class="panel-head mb-4">
+              <h4 class="text-lg font-bold text-slate-100">Audit Aktivitas</h4>
+            </div>
+            <div id="securityActivityList" class="grid gap-3"></div>
+          </div>
+
+          <form id="deleteAccountForm" class="form-grid danger-zone grid gap-4 rounded-[26px] border border-rose-500/20 bg-rose-500/10 p-5">
+            <p class="eyebrow">Danger Zone</p>
+            <label class="grid gap-2 text-sm font-semibold text-slate-200">
+              <span>Password untuk hapus akun</span>
+              <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-slate-100 outline-none transition focus:border-rose-400/60 focus:bg-white/10" type="password" id="deleteAccountPassword" required />
+            </label>
+            <button class="danger-btn inline-flex items-center justify-center rounded-2xl px-5 py-3.5 font-semibold" type="submit">Hapus Akun Permanen</button>
+          </form>
+        </div>
+
+        <p id="profileStatus" class="auth-status hidden mt-5 rounded-2xl px-4 py-3 text-sm font-semibold"></p>
+      </div>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
 </html>
-
-
