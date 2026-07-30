@@ -3292,3 +3292,6 @@ async function initializeApp() {
 initializeApp();
 
 document.getElementById("currentYear").textContent = new Date().getFullYear();
+
+const sidebarYearEl = document.getElementById("sidebarYear");
+if (sidebarYearEl) sidebarYearEl.textContent = new Date().getFullYear();
