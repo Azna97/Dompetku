@@ -195,11 +195,11 @@
           </button>
         </nav>
 
-        <div class="sidebar-footer mt-auto flex flex-col">
+        <div class="sidebar-footer mt-auto hidden lg:flex flex-col">
           <!-- Tombol Dark Mode -->
           <button class="ghost-btn w-full" id="themeToggle">Dark Mode</button>
 
-          <!-- Mini Copyright dengan penambahan mt-5 (margin-top) -->
+          <!-- Mini Copyright -->
           <div class="mt-5 border-t border-slate-700/30 pt-4 text-center text-[10px] text-slate-500">
             <p>&copy; <span id="sidebarYear"></span> Dompetku &reg;</p>
             <p class="mt-1">Dibuat dengan ☕ oleh Aziezkdr</p>
@@ -673,6 +673,12 @@
             <p id="profileStatus" class="auth-status hidden mt-5 rounded-2xl px-4 py-3 text-sm font-semibold"></p>
           </div>
         </section>
+
+        <!-- Footer khusus tampilan mobile (hanya tampil di layar mobile/tablet di bawah main content) -->
+        <footer class="mobile-app-footer mt-8 border-t border-white/10 pt-6 text-center text-xs text-slate-400 block lg:hidden">
+          <p>&copy; <span id="mobileYear"></span> Dompetku &reg; - Aplikasi Keuangan Pribadi</p>
+          <p class="mt-1 text-[11px] text-slate-500">Dibuat dengan ☕ oleh Aziezkdr</p>
+        </footer>
       </main>
     </div>
 

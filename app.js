@@ -3291,7 +3291,12 @@ async function initializeApp() {
 
 initializeApp();
 
-document.getElementById("currentYear").textContent = new Date().getFullYear();
+const currentYearVal = new Date().getFullYear();
+const currentYearEl = document.getElementById("currentYear");
+if (currentYearEl) currentYearEl.textContent = currentYearVal;
 
 const sidebarYearEl = document.getElementById("sidebarYear");
-if (sidebarYearEl) sidebarYearEl.textContent = new Date().getFullYear();
+if (sidebarYearEl) sidebarYearEl.textContent = currentYearVal;
+
+const mobileYearEl = document.getElementById("mobileYear");
+if (mobileYearEl) mobileYearEl.textContent = currentYearVal;
